@@ -1,0 +1,16 @@
+{
+  "name": "choose_platform",
+  "type": "list",
+  "message": "What do you want to build?",
+  "choices": [
+    "Backend",
+    "Frontend",
+    "Fullstack",
+    "CLI Tool",
+    "Mobile App",
+    "Library / Package"
+  ],
+  "children": [
+    "backend/base.json"
+  ]
+}

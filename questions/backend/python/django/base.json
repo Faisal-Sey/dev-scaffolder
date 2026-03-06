@@ -1,0 +1,10 @@
+{
+  "name": "django",
+  "type": "list",
+  "message": "Choose django template",
+  "choices": [
+    "Official",
+    "Custom Authentication"
+  ],
+  "children": []
+}

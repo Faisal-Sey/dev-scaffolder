@@ -1,0 +1,14 @@
+{
+  "name": "backend",
+  "type": "list",
+  "message": "Choose backend language",
+  "choices": [
+    "Python",
+    "Javascript",
+    "Go",
+    "Rust"
+  ],
+  "children": [
+    "backend/python/base.json"
+  ]
+}
