@@ -2,6 +2,9 @@ import sys
 import os
 import inquirer
 from typing import Optional, Dict, List
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
 
 # Add project root to sys.path to resolve internal modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -11,15 +14,24 @@ from processors.get_inquirer import get_inquirer_instance
 from processors.handle_answers import resolve_final_choices
 from utils.base import clean_name, build_answers_path
 
+console = Console()
+
 
 def run_scaffolder():
     """
     Main loop for the scaffolder. Navigates through a tree of questions
     and resolves the final choices once a leaf node is reached.
     """
-    current_question = load_questions()
+    console.print(Panel(
+        Text("Welcome to the Scaffolder!", style="bold blue", justify="center"),
+        subtitle="[bold white]Generate your project effortlessly[/bold white]"
+    ))
+
+    with console.status("[bold green]Loading questions...", spinner="dots"):
+        current_question = load_questions()
+
     if not current_question:
-        print("Questions not configured")
+        console.print("[bold red]Error:[/bold red] Questions not configured", style="red")
         return
 
     answers_path = ""
@@ -33,16 +45,20 @@ def run_scaffolder():
             )
         ]
         
-        answers: Optional[Dict[str, str]] = inquirer.prompt(prompt)
+        try:
+            answers: Optional[Dict[str, str]] = inquirer.prompt(prompt)
+        except KeyboardInterrupt:
+            console.print("\n[bold yellow]Operation cancelled by user.[/bold yellow]")
+            break
         
         # If the user cancels (e.g., Ctrl+C), answers will be None
         if not answers:
-            print("No answer was selected")
+            console.print("[bold yellow]No answer was selected. Exiting.[/bold yellow]")
             break
 
         current_answer = answers.get(current_question.get("name"))
         if current_answer is None:
-            print("No answer was selected")
+            console.print("[bold red]Error:[/bold red] No answer was selected", style="red")
             break
 
         # Update the logical path of selected answers
@@ -59,6 +75,7 @@ def run_scaffolder():
 
         # If no child matches the answer, we've reached a leaf node
         if next_question is None:
+            console.print(f"\n[bold green]Success![/bold green] Resolving choices for: [cyan]{answers_path}[/cyan]\n")
             resolve_final_choices(answers_path)
             break
 

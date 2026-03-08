@@ -3,10 +3,9 @@ import shutil
 import subprocess
 import sys
 import argparse
-from pathlib import Path
-from typing import TypedDict
 
 import inquirer
+from rich.console import Console
 
 # Add the project root to sys.path
 # Fix - ModuleNotFoundError: No module named 'processor'
@@ -15,6 +14,8 @@ sys.path.append(
 
 from utils.base import check_or_create_venv, get_venv_python_executor, activate_venv, run_subprocess_command
 from typings.base import DjangoOfficialTemplateArgs, DjangoOfficialTemplateResponse, ExecutorResponseStatus
+
+console = Console()
 
 current_folder = os.getcwd()
 
@@ -63,15 +64,14 @@ def install_dependencies(
 
     install_django = run_subprocess_command(project_command)
     if not install_django:
-        print("Failed to install django")
+        console.print("[bold red]Failed to install django[/bold red]")
         return ExecutorResponseStatus(success=False)
 
-    print("Django installed successfully")
+    console.print("[bold green]Django installed successfully[/bold green]")
     return ExecutorResponseStatus(success=True)
 
 
 def add_packages_to_requirements_txt(venv_python_executor: str, project_name: str) -> None:
-    print(os.getcwd())
     os.chdir(os.path.join(current_folder, project_name))
     result = subprocess.run(
         [venv_python_executor, '-m', 'pip', 'freeze'],
@@ -116,10 +116,10 @@ def create_django_project(
 
     create_project = run_subprocess_command(create_project_command)
     if not create_project:
-        print("Failed to create django project")
+        console.print("[bold red]Failed to create django project[/bold red]")
         return ExecutorResponseStatus(success=False)
 
-    print(f"Django project {project_name} created successfully.")
+    console.print(f"[bold green]Django project {project_name} created successfully.[/bold green]")
     return ExecutorResponseStatus(success=True)
 
 
@@ -151,12 +151,12 @@ def create_django_app(app_name: str, project_name: str) -> ExecutorResponseStatu
         create_app = run_subprocess_command(create_app_command)
 
         if not create_app:
-            print("Failed to create django app")
+            console.print("[bold red]Failed to create django app[/bold red]")
             return ExecutorResponseStatus(success=False)
         else:
-            print(f"Django app {app_name} created successfully.")
+            console.print(f"[bold green]Django app {app_name} created successfully.[/bold green]")
     else:
-        print("Skip django app creation")
+        console.print("[yellow]Skip django app creation[/yellow]")
 
     return ExecutorResponseStatus(success=True)
 
@@ -184,25 +184,28 @@ def execute_creation_commands(
     """
 
     venv_python_executor = get_venv_python_executor()
-    installation_response = install_dependencies(venv_python_executor)
+    with console.status("[bold blue]Installing dependencies...", spinner="arc"):
+        installation_response = install_dependencies(venv_python_executor)
     if not installation_response.success:
-        print("Failed to install django")
+        console.print("[bold red]Failed to install django[/bold red]")
         return ExecutorResponseStatus(success=False)
 
-    project_creation_response = create_django_project(
-        project_name,
-        directory_name,
-    )
+    with console.status(f"[bold blue]Creating Django project '{project_name}'...", spinner="dots"):
+        project_creation_response = create_django_project(
+            project_name,
+            directory_name,
+        )
     if not project_creation_response.success:
-        print("Failed to create django project")
+        console.print("[bold red]Failed to create django project[/bold red]")
         return ExecutorResponseStatus(success=False)
 
     add_packages_to_requirements_txt(venv_python_executor, project_name)
 
     project_directory = os.path.join(current_folder, directory_name)
-    app_creation_response = create_django_app(app_name, project_directory)
+    with console.status(f"[bold blue]Creating Django app '{app_name}'...", spinner="dots"):
+        app_creation_response = create_django_app(app_name, project_directory)
     if not app_creation_response.success:
-        print("Project created successfully. Failed at app creation")
+        console.print("[bold yellow]Project created successfully. Failed at app creation[/bold yellow]")
         return ExecutorResponseStatus(success=True, message="APP_CREATION_FAILED")
 
     return ExecutorResponseStatus(success=True)
@@ -224,7 +227,7 @@ def prepare_directory(directory_full_path: str) -> ExecutorResponseStatus:
 
     # Ensure directory_full_path is not equal to the current folder to avoid accidental deletion
     if os.path.abspath(directory_full_path) == os.path.abspath(current_folder):
-        print("Cannot delete the root directory")
+        console.print("[bold red]Cannot delete the root directory[/bold red]")
         return ExecutorResponseStatus(success=False)
 
     is_directory_exist = os.path.exists(directory_full_path)
@@ -239,7 +242,7 @@ def prepare_directory(directory_full_path: str) -> ExecutorResponseStatus:
         ]
         replace_directory_answers = inquirer.prompt(prompt)
         if replace_directory_answers is None:
-            print("You selected a wrong option")
+            console.print("[bold yellow]You selected a wrong option or cancelled[/bold yellow]")
             return ExecutorResponseStatus(success=False)
 
         replace_directory = replace_directory_answers.get("replace_directory")

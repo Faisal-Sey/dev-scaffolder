@@ -3,12 +3,14 @@ from pathlib import Path
 from typing import Optional, List, Dict
 
 import inquirer
+from rich.console import Console
 
 from processors.get_inquirer import get_inquirer_instance
 from typings.question import TQuestionNonPopulated, TQuestionPopulated
 from utils.base import open_a_json_file, run_python_file
 
 root_folder = Path(__file__).parent.parent
+console = Console()
 
 def get_question_json(answer_path: str) -> Optional[TQuestionNonPopulated]:
     """
@@ -79,4 +81,6 @@ def resolve_final_choices(answer_path: str):
         question.get("children", [])
     )
     executor_file = generate_executor_file(answer_path)
-    run_python_file(executor_file, template_answers)
+    
+    with console.status(f"[bold blue]Executing template for {answer_path}...", spinner="bouncingBar"):
+        run_python_file(executor_file, template_answers)
