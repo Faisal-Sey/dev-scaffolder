@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 
-from typings.base import SubProcessReturnCodeEnum
+from typings.base import SubProcessReturnCodeEnum, WriteToFileContent, ExecutorResponseStatus
 
 root_folder = Path(__file__).parent.parent
 
@@ -19,6 +19,8 @@ def clean_name(name: str) -> str:
     """
 
     return (name.lower()
+            .replace("(", "")
+            .replace(")", "")
             .replace(" ", "_")
             .replace("/", "_"))
 
@@ -34,7 +36,7 @@ def build_answers_path(
     :param current_answer: Current selected choice
     :return: Returns a constructed answer path
     """
-    return previous_answer_path + "/" + current_answer
+    return previous_answer_path + "/" + clean_name(current_answer).title()
 
 
 def open_a_json_file(file_path: str) -> Optional[Dict[str, Any]]:
@@ -79,9 +81,10 @@ def run_python_file(file_path: str, inputs: Dict[str, str]) -> None:
     """
     args = [sys.executable, file_path]
 
-    for key, value in inputs.items():
-        args.append(f"--{key}")
-        args.append(value)
+    if inputs is not None:
+        for key, value in inputs.items():
+            args.append(f"--{key}")
+            args.append(value)
 
     subprocess.run(args)
 
@@ -187,3 +190,34 @@ def activate_venv() -> None:
 
     return None
 
+
+def write_into_file(path: str, contents: List[WriteToFileContent]) -> ExecutorResponseStatus:
+    lines = []
+    is_modified = False
+
+    try:
+        with open(path, "r") as f:
+            lines = f.readlines()
+
+    except FileNotFoundError:
+        print(f"Failed to write into {path}")
+        return ExecutorResponseStatus(success=False)
+
+    if len(contents) > 0:
+        for content in contents:
+            if len(lines) == 0:
+                lines.append(content.content)
+            else:
+                lines[content.line] = content.content
+            is_modified = True
+
+    try:
+        if is_modified:
+            with open(path, "w") as f:
+                f.writelines(lines)
+
+        return ExecutorResponseStatus(success=True)
+
+    except FileNotFoundError:
+        print(f"Failed to write into {path}")
+        return ExecutorResponseStatus(success=False)

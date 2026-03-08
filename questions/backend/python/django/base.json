@@ -4,6 +4,7 @@
   "message": "Choose django template",
   "choices": [
     "Official",
+    "Official (Configure App)",
     "Custom Authentication"
   ],
   "children": []

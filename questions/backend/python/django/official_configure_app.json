@@ -1,5 +1,5 @@
 {
-  "name": "django_official",
+  "name": "django_official_configure_app",
   "type": "text",
   "message": "Choose django template",
   "choices": [],
