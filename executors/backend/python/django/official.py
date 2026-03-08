@@ -40,7 +40,9 @@ def get_venv_environment() -> str:
     return venv_python_executor
 
 
-def install_dependencies(venv_python_executor: str) -> ExecutorResponseStatus:
+def install_dependencies(
+        venv_python_executor: str,
+) -> ExecutorResponseStatus:
     """
     Installs the Django dependencies using the provided Python virtual environment executor.
 
@@ -66,6 +68,23 @@ def install_dependencies(venv_python_executor: str) -> ExecutorResponseStatus:
 
     print("Django installed successfully")
     return ExecutorResponseStatus(success=True)
+
+
+def add_packages_to_requirements_txt(venv_python_executor: str, project_name: str) -> None:
+    print(os.getcwd())
+    os.chdir(os.path.join(current_folder, project_name))
+    result = subprocess.run(
+        [venv_python_executor, '-m', 'pip', 'freeze'],
+        capture_output=True,
+        text=True,
+        check=True
+    )
+
+    # Write output to requirements.txt
+    with open('requirements.txt', 'w') as f:
+        f.write(result.stdout)
+
+    os.chdir(os.path.join(current_folder))
 
 
 def create_django_project(
@@ -170,10 +189,15 @@ def execute_creation_commands(
         print("Failed to install django")
         return ExecutorResponseStatus(success=False)
 
-    project_creation_response = create_django_project(project_name, directory_name)
+    project_creation_response = create_django_project(
+        project_name,
+        directory_name,
+    )
     if not project_creation_response.success:
         print("Failed to create django project")
         return ExecutorResponseStatus(success=False)
+
+    add_packages_to_requirements_txt(venv_python_executor, project_name)
 
     project_directory = os.path.join(current_folder, directory_name)
     app_creation_response = create_django_app(app_name, project_directory)
