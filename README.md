@@ -62,7 +62,3 @@ To add a new project template:
 1. Create a new JSON file in `questions/` defining the configuration options.
 2. Link it to the existing question tree in `questions/base.json`.
 3. Create a corresponding Python script in `executors/` that implements the logic for creating the project.
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
