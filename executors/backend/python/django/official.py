@@ -7,13 +7,16 @@ import argparse
 import inquirer
 from rich.console import Console
 
+
 # Add the project root to sys.path
 # Fix - ModuleNotFoundError: No module named 'processor'
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..')))
 
+from rich.status import Status
 from utils.base import check_or_create_venv, get_venv_python_executor, activate_venv, run_subprocess_command
 from typings.base import DjangoOfficialTemplateArgs, DjangoOfficialTemplateResponse, ExecutorResponseStatus
+
 
 console = Console()
 
@@ -240,7 +243,9 @@ def prepare_directory(directory_full_path: str) -> ExecutorResponseStatus:
                 default=True
             )
         ]
+
         replace_directory_answers = inquirer.prompt(prompt)
+
         if replace_directory_answers is None:
             console.print("[bold yellow]You selected a wrong option or cancelled[/bold yellow]")
             return ExecutorResponseStatus(success=False)
@@ -259,13 +264,17 @@ def prepare_directory(directory_full_path: str) -> ExecutorResponseStatus:
     return ExecutorResponseStatus(success=True)
 
 
-def generate_django_official_template(**kwargs: DjangoOfficialTemplateArgs) -> DjangoOfficialTemplateResponse:
+def generate_django_official_template(
+        executing: Status = None,
+        **kwargs: DjangoOfficialTemplateArgs
+) -> DjangoOfficialTemplateResponse:
     """
     Generates the official Django project template by setting up all necessary folders
     and executing creation commands. The process ensures the directory is properly
     prepared and named before the project and application are initialized with
     minimal customization options.
 
+    :param executing: Optional rich Status object to stop/start during interaction.
     :param kwargs: Arbitrary keyword arguments containing optional custom inputs
         for the project and app creation process.
         - project_name (str): The name of the Django project.
@@ -323,7 +332,7 @@ if __name__ == '__main__':
                         help='Name of the Django project')
     parser.add_argument('--directory_name', type=str, default='myproject',
                         help='Name of the Django project directory')
-    parser.add_argument('--app_name', type=str, default='core',
+    parser.add_argument('--app_name', type=str, default='',
                         help='Name of the Django app')
 
     # Parse arguments
@@ -332,5 +341,5 @@ if __name__ == '__main__':
     generate_django_official_template(
         project_name=args.project_name,
         app_name=args.app_name,
-        directory_name=args.directory_name
+        directory_name=args.directory_name,
     )

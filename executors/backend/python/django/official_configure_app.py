@@ -1,12 +1,14 @@
 import argparse
 import sys
 import os
+from rich.console import Console
 
 # Add the project root to sys.path
 # Fix - ModuleNotFoundError: No module named 'executors'
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..')))
 
+from rich.status import Status
 from executors.backend.python.django.official import generate_django_official_template
 from typings.base import (
     DjangoOfficialTemplateArgs,
@@ -17,13 +19,48 @@ from typings.base import (
 from constants.backend.python.base import (
     DJANGO_APP_URL_CONFIG,
     DJANGO_VIEW_FUNCTION_IMPORT_JSON_RESPONSE,
-    DJANGO_VIEW_FUNCTION
+    DJANGO_VIEW_FUNCTION,
 )
-from utils.base import write_into_file
+from utils.base import write_into_file, get_venv_python_executor
 
 
-def integrate_app_url_into_project():
-    pass
+console = Console()
+
+
+def integrate_app_url_into_project(
+        path: str,
+        directory_name: str,
+        app_name: str
+):
+    project_urls_path = os.path.join(path, directory_name, "urls.py")
+    try:
+        modified_content = ""
+        with open(project_urls_path, 'r') as f:
+            content = f.read()
+
+            modified_content = content.replace(
+                'urlpatterns = [\n',
+                (
+                    "urlpatterns = [\n"
+                    f"  path('{app_name}/', include('{app_name}.urls')),\n"
+                )
+            )
+            modified_content = modified_content.replace(
+                "from django.urls import path",
+                (
+                    "from django.urls import path, include"
+                )
+            )
+
+        print(modified_content)
+
+        with open(project_urls_path, "w") as f:
+            f.write(modified_content)
+
+    except FileNotFoundError:
+        console.print(
+            f"[bold red]File was not found at {project_urls_path}[/bold red]"
+        )
 
 
 def modify_views_py(path: str, app_name: str):
@@ -50,15 +87,26 @@ def create_app_urls_py(path: str, app_name: str):
     )
 
 
-def configure_app(path: str, app_name: str) -> None:
+def configure_app(path: str, app_name: str, directory_name: str) -> None:
     modify_views_py(path, app_name)
     create_app_urls_py(path, app_name)
-    print(
-        f"Django app {app_name} configured successfully in {path}"
+    integrate_app_url_into_project(path, directory_name, app_name)
+
+    venv_python_executor = get_venv_python_executor()
+
+    # Re-freeze requirements
+    from executors.backend.python.django.official import add_packages_to_requirements_txt
+    # Change back to root to run pip freeze correctly or pass the right path
+    os.chdir(os.path.abspath(os.path.join(path, "..")))
+    add_packages_to_requirements_txt(venv_python_executor, os.path.basename(path))
+
+    console.print(
+        f"[bold green]Django app {app_name} configured successfully in {path}[/bold green]"
     )
 
 
 def generate_django_official_configure_app_template(
+        executing: Status = None,
         **kwargs: DjangoOfficialTemplateArgs
 ) -> ExecutorResponseStatus:
     """
@@ -66,6 +114,7 @@ def generate_django_official_configure_app_template(
     the necessary files and directories for the project and app, based on the provided parameters,
     and applies the required configuration to the generated app.
 
+    :param executing: Optional rich Status object to stop/start during interaction.
     :param kwargs: A dictionary of parameters used for generating the Django project and app. Expected
                    keys include:
                    - project_name (str): Name of the project. Defaults to "test" if not provided or empty.
@@ -88,6 +137,7 @@ def generate_django_official_configure_app_template(
         directory_name = project_name
 
     response: DjangoOfficialTemplateResponse = generate_django_official_template(
+        executing=executing,
         project_name=project_name,
         app_name=app_name,
         directory_name=directory_name
@@ -99,7 +149,7 @@ def generate_django_official_configure_app_template(
     if response.message == "APP_CREATION_FAILED":
         return ExecutorResponseStatus(success=False)
 
-    configure_app(response.path, app_name)
+    configure_app(response.path, app_name, directory_name)
 
     return ExecutorResponseStatus(success=True)
 
@@ -114,12 +164,11 @@ if __name__ == '__main__':
                         help='Name of the Django project directory')
     parser.add_argument('--app_name', type=str, default='core',
                         help='Name of the Django app')
-
     # Parse arguments
     args = parser.parse_args()
 
     generate_django_official_configure_app_template(
         project_name=args.project_name,
         app_name=args.app_name,
-        directory_name=args.directory_name
+        directory_name=args.directory_name,
     )

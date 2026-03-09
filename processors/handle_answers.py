@@ -12,9 +12,10 @@ from utils.base import open_a_json_file, run_python_file
 root_folder = Path(__file__).parent.parent
 console = Console()
 
+
 def get_question_json(answer_path: str) -> Optional[TQuestionNonPopulated]:
     """
-    This retrieves the question content based on provided answer_path
+    This retrieves the question content based on the provided answer_path
 
     :param answer_path: The already built answer path
     :return: Returns question content
@@ -81,6 +82,9 @@ def resolve_final_choices(answer_path: str):
         question.get("children", [])
     )
     executor_file = generate_executor_file(answer_path)
-    
-    with console.status(f"[bold blue]Executing template for {answer_path}...", spinner="bouncingBar"):
+
+    with console.status(
+            f"[bold blue]Executing template for {answer_path}...",
+            spinner="bouncingBar"
+    ):
         run_python_file(executor_file, template_answers)
