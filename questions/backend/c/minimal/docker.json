@@ -1,0 +1,9 @@
+{
+  "name": "c_minimal_docker",
+  "type": "text",
+  "message": "Configure C Minimal Docker",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

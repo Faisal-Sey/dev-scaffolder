@@ -1,0 +1,9 @@
+{
+  "name": "js_angular_official",
+  "type": "text",
+  "message": "Configure Angular (JavaScript) Official",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

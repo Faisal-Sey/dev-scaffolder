@@ -1,0 +1,1 @@
+{"name": "remix", "type": "list", "message": "Choose Remix template", "choices": ["Official", "Tailwind CSS", "Prisma", "Docker", "Testing"], "children": []}

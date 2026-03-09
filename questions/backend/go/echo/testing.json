@@ -1,0 +1,9 @@
+{
+  "name": "go_echo_testing",
+  "type": "text",
+  "message": "Configure Go Echo Testing",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

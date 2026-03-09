@@ -1,0 +1,9 @@
+{
+  "name": "ts_react_redux_toolkit",
+  "type": "text",
+  "message": "Configure React (TypeScript) Redux Toolkit",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

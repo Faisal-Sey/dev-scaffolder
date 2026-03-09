@@ -1,0 +1,9 @@
+{
+  "name": "ssr_remix_testing",
+  "type": "text",
+  "message": "Configure Remix Testing",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

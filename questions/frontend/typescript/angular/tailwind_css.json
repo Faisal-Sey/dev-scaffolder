@@ -1,0 +1,9 @@
+{
+  "name": "ts_angular_tailwind_css",
+  "type": "text",
+  "message": "Configure Angular (TypeScript) Tailwind CSS",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

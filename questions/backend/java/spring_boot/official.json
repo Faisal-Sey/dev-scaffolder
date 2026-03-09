@@ -1,0 +1,9 @@
+{
+  "name": "java_spring_boot_official",
+  "type": "text",
+  "message": "Configure Java Spring Boot Official",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

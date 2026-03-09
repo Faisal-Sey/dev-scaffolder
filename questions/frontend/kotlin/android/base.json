@@ -1,0 +1,1 @@
+{"name": "android", "type": "list", "message": "Choose Android Native template", "choices": ["Official", "MVVM", "Navigation", "Room DB", "Hilt", "Testing"], "children": []}

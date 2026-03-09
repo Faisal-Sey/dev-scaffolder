@@ -1,0 +1,9 @@
+{
+  "name": "python_django_websockets_channels",
+  "type": "text",
+  "message": "Configure Django WebSockets (Channels) project",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

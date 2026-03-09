@@ -1,0 +1,9 @@
+{
+  "name": "go_gin_rest_api",
+  "type": "text",
+  "message": "Configure Go Gin REST API",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

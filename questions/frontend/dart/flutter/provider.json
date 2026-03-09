@@ -1,0 +1,9 @@
+{
+  "name": "dart_flutter_provider",
+  "type": "text",
+  "message": "Configure Flutter Provider",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

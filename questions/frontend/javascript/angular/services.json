@@ -1,0 +1,9 @@
+{
+  "name": "js_angular_services",
+  "type": "text",
+  "message": "Configure Angular (JavaScript) Services",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

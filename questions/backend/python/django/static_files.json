@@ -1,0 +1,9 @@
+{
+  "name": "python_django_static_files",
+  "type": "text",
+  "message": "Configure Django Static Files (Whitenoise) project",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

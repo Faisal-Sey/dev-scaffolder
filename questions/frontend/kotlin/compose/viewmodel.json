@@ -1,0 +1,9 @@
+{
+  "name": "kotlin_compose_viewmodel",
+  "type": "text",
+  "message": "Configure Jetpack Compose ViewModel",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

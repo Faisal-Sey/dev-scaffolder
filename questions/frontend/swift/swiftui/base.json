@@ -1,0 +1,1 @@
+{"name": "swiftui", "type": "list", "message": "Choose SwiftUI template", "choices": ["Official", "Navigation", "MVVM", "Core Data", "Testing"], "children": []}

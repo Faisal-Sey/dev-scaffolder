@@ -1,0 +1,1 @@
+{"name": "django_react", "type": "list", "message": "Choose Django + React template", "choices": ["Official", "Docker", "JWT Auth", "REST Framework", "Vite"], "children": []}

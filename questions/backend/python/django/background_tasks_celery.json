@@ -1,0 +1,10 @@
+{
+  "name": "python_django_background_tasks_celery",
+  "type": "text",
+  "message": "Configure Django Background Tasks (Celery + Redis) project",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []},
+    {"name": "redis_url", "type": "text", "message": "Enter Redis URL (e.g. redis://localhost:6379/0)", "choices": []}
+  ]
+}

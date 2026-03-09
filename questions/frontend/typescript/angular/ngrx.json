@@ -1,0 +1,9 @@
+{
+  "name": "ts_angular_ngrx",
+  "type": "text",
+  "message": "Configure Angular (TypeScript) NgRx",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

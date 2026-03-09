@@ -1,0 +1,9 @@
+{
+  "name": "python_django_testing_pytest",
+  "type": "text",
+  "message": "Configure Django Testing (Pytest) project",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

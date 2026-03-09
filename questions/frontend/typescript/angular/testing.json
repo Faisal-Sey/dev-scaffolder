@@ -1,0 +1,9 @@
+{
+  "name": "ts_angular_testing",
+  "type": "text",
+  "message": "Configure Angular (TypeScript) Testing",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "fullstack_mern_docker",
+  "type": "text",
+  "message": "Configure MERN Stack Docker",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

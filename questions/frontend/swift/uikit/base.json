@@ -1,0 +1,1 @@
+{"name": "uikit", "type": "list", "message": "Choose UIKit template", "choices": ["Official", "MVVM", "Storyboard", "Core Data", "Testing"], "children": []}

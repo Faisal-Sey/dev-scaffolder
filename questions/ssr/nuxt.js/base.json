@@ -1,0 +1,1 @@
+{"name": "nuxt.js", "type": "list", "message": "Choose Nuxt.js template", "choices": ["Official", "Content Module", "Tailwind CSS", "Pinia", "Docker", "Testing"], "children": []}

@@ -1,0 +1,9 @@
+{
+  "name": "kotlin_android_room_db",
+  "type": "text",
+  "message": "Configure Android Native Room DB",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

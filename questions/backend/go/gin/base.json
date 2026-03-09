@@ -1,0 +1,1 @@
+{"name": "gin", "type": "list", "message": "Choose Gin template", "choices": ["Official", "REST API", "Docker", "GORM", "JWT Auth", "Testing"], "children": []}

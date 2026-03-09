@@ -1,0 +1,1 @@
+{"name": "compose", "type": "list", "message": "Choose Jetpack Compose template", "choices": ["Official", "Navigation", "ViewModel", "Room DB", "Testing"], "children": []}

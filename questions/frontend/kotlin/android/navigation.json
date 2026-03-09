@@ -1,0 +1,9 @@
+{
+  "name": "kotlin_android_navigation",
+  "type": "text",
+  "message": "Configure Android Native Navigation",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

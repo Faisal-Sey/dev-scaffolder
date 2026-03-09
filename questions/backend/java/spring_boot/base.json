@@ -1,0 +1,1 @@
+{"name": "spring_boot", "type": "list", "message": "Choose Spring Boot template", "choices": ["Official", "REST API", "JPA", "Docker", "JWT Auth", "WebSockets", "Testing", "GraphQL"], "children": []}

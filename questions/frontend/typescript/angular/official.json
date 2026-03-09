@@ -1,0 +1,9 @@
+{
+  "name": "ts_angular_official",
+  "type": "text",
+  "message": "Configure Angular (TypeScript) Official",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

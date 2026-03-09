@@ -1,0 +1,1 @@
+{"name": "minimal", "type": "list", "message": "Choose C setup template", "choices": ["Basic", "CMake", "Docker"], "children": []}

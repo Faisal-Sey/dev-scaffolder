@@ -1,0 +1,9 @@
+{
+  "name": "swift_uikit_official",
+  "type": "text",
+  "message": "Configure UIKit Official",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

@@ -1,0 +1,1 @@
+{"name": "flutter", "type": "list", "message": "Choose Flutter template", "choices": ["Official", "Navigation", "BLoC", "Provider", "Firebase", "Testing"], "children": []}

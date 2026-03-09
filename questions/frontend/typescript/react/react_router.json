@@ -1,0 +1,9 @@
+{
+  "name": "ts_react_react_router",
+  "type": "text",
+  "message": "Configure React (TypeScript) React Router",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

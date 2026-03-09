@@ -1,0 +1,9 @@
+{
+  "name": "swift_uikit_core_data",
+  "type": "text",
+  "message": "Configure UIKit Core Data",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "go_gin_docker",
+  "type": "text",
+  "message": "Configure Go Gin Docker",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

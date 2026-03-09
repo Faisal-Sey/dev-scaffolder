@@ -1,0 +1,1 @@
+{"name": "quarkus", "type": "list", "message": "Choose Quarkus template", "choices": ["Official", "REST API", "Hibernate Panache", "Docker", "JWT Auth", "Testing"], "children": []}

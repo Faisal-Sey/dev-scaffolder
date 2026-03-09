@@ -1,0 +1,9 @@
+{
+  "name": "python_django_environment_config",
+  "type": "text",
+  "message": "Configure Django Environment Config (.env) project",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

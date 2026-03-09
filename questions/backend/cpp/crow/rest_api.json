@@ -1,0 +1,9 @@
+{
+  "name": "cpp_crow_rest_api",
+  "type": "text",
+  "message": "Configure C++ Crow REST API",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

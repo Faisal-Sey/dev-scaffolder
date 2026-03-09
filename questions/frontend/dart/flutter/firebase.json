@@ -1,0 +1,9 @@
+{
+  "name": "dart_flutter_firebase",
+  "type": "text",
+  "message": "Configure Flutter Firebase",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

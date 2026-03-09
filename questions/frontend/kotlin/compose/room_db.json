@@ -1,0 +1,9 @@
+{
+  "name": "kotlin_compose_room_db",
+  "type": "text",
+  "message": "Configure Jetpack Compose Room DB",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

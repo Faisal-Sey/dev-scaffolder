@@ -1,0 +1,9 @@
+{
+  "name": "fullstack_mern_testing",
+  "type": "text",
+  "message": "Configure MERN Stack Testing",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

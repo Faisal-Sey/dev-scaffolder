@@ -1,0 +1,1 @@
+{"name": "next.js", "type": "list", "message": "Choose Next.js SSR template", "choices": ["Official", "App Router", "Tailwind CSS", "Prisma", "Docker", "Auth", "Testing"], "children": []}

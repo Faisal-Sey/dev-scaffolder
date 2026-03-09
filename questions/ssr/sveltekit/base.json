@@ -1,0 +1,1 @@
+{"name": "sveltekit", "type": "list", "message": "Choose SvelteKit template", "choices": ["Official", "Tailwind CSS", "Prisma", "Docker", "Testing"], "children": []}

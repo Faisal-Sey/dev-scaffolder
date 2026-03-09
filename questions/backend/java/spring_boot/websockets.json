@@ -1,0 +1,9 @@
+{
+  "name": "java_spring_boot_websockets",
+  "type": "text",
+  "message": "Configure Java Spring Boot WebSockets",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

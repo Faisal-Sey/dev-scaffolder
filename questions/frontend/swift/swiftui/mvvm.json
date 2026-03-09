@@ -1,0 +1,9 @@
+{
+  "name": "swift_swiftui_mvvm",
+  "type": "text",
+  "message": "Configure SwiftUI MVVM",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

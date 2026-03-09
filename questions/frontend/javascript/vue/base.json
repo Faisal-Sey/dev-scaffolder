@@ -1,0 +1,1 @@
+{"name": "vue", "type": "list", "message": "Choose Vue (JavaScript) template", "choices": ["Official", "Vue Router", "Pinia", "Tailwind CSS", "Testing"], "children": []}

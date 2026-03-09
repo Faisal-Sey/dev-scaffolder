@@ -1,0 +1,9 @@
+{
+  "name": "ts_angular_routing",
+  "type": "text",
+  "message": "Configure Angular (TypeScript) Routing",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

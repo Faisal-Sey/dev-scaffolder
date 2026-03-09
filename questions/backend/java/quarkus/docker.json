@@ -1,0 +1,9 @@
+{
+  "name": "java_quarkus_docker",
+  "type": "text",
+  "message": "Configure Java Quarkus Docker",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

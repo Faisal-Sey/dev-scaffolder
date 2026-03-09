@@ -1,0 +1,9 @@
+{
+  "name": "dart_flutter_bloc",
+  "type": "text",
+  "message": "Configure Flutter BLoC",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

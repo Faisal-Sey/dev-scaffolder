@@ -1,0 +1,1 @@
+{"name": "react", "type": "list", "message": "Choose React (JavaScript) template", "choices": ["Official", "React Router", "Redux Toolkit", "Tailwind CSS", "Testing"], "children": []}

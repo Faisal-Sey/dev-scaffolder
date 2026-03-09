@@ -1,0 +1,9 @@
+{
+  "name": "python_django_ci_cd_github_actions",
+  "type": "text",
+  "message": "Configure Django CI/CD (GitHub Actions) project",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

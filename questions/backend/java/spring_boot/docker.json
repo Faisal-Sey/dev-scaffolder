@@ -1,0 +1,9 @@
+{
+  "name": "java_spring_boot_docker",
+  "type": "text",
+  "message": "Configure Java Spring Boot Docker",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

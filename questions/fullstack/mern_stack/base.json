@@ -1,0 +1,1 @@
+{"name": "mern_stack", "type": "list", "message": "Choose MERN Stack template", "choices": ["Official", "TypeScript", "Docker", "JWT Auth", "Testing"], "children": []}

@@ -1,0 +1,1 @@
+{"name": "echo", "type": "list", "message": "Choose Echo template", "choices": ["Official", "REST API", "Docker", "GORM", "JWT Auth", "Testing"], "children": []}

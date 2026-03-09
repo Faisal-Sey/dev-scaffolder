@@ -1,0 +1,1 @@
+{"name": "next.js", "type": "list", "message": "Choose Next.js Fullstack template", "choices": ["Official", "App Router", "Prisma", "Docker", "Auth"], "children": []}

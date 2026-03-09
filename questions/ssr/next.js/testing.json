@@ -1,0 +1,9 @@
+{
+  "name": "ssr_nextjs_testing",
+  "type": "text",
+  "message": "Configure Next.js SSR Testing",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

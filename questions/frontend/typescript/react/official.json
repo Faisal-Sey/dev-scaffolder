@@ -1,0 +1,9 @@
+{
+  "name": "ts_react_official",
+  "type": "text",
+  "message": "Configure React (TypeScript) Official",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "python_django_postgresql",
+  "type": "text",
+  "message": "Configure Django PostgreSQL project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

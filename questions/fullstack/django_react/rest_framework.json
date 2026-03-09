@@ -1,0 +1,9 @@
+{
+  "name": "fullstack_django_react_rest_framework",
+  "type": "text",
+  "message": "Configure Django React REST Framework",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

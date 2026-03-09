@@ -1,0 +1,1 @@
+{"name": "svelte", "type": "list", "message": "Choose Svelte (JavaScript) template", "choices": ["Official", "Vite", "Tailwind CSS", "Testing"], "children": []}

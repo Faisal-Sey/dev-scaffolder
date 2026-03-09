@@ -1,0 +1,9 @@
+{
+  "name": "kotlin_android_testing",
+  "type": "text",
+  "message": "Configure Android Native Testing",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "ssr_astro_react_integration",
+  "type": "text",
+  "message": "Configure Astro React Integration",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

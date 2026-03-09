@@ -1,0 +1,1 @@
+{"name": "astro", "type": "list", "message": "Choose Astro template", "choices": ["Official", "React Integration", "Vue Integration", "Tailwind CSS", "Docker", "Testing"], "children": []}

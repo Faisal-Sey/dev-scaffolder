@@ -1,0 +1,9 @@
+{
+  "name": "fullstack_nextjs_prisma",
+  "type": "text",
+  "message": "Configure Next.js Fullstack Prisma",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

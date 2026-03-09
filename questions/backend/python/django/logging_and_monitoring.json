@@ -1,0 +1,9 @@
+{
+  "name": "python_django_logging_and_monitoring",
+  "type": "text",
+  "message": "Configure Django Logging and Monitoring project",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

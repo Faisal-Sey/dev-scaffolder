@@ -1,0 +1,1 @@
+{"name": "angular", "type": "list", "message": "Choose Angular (TypeScript) template", "choices": ["Official", "NgRx", "Routing", "Tailwind CSS", "Testing"], "children": []}
