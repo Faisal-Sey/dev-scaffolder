@@ -1,0 +1,13 @@
+{
+  "name": "rust",
+  "type": "list",
+  "message": "Choose Rust framework",
+  "choices": [
+    "Actix",
+    "Rocket"
+  ],
+  "children": [
+    "backend/rust/actix.json",
+    "backend/rust/rocket.json"
+  ]
+}

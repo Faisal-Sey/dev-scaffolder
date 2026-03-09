@@ -1,0 +1,11 @@
+{
+  "name": "c",
+  "type": "list",
+  "message": "Choose C setup",
+  "choices": [
+    "Minimal"
+  ],
+  "children": [
+    "backend/c/minimal.json"
+  ]
+}

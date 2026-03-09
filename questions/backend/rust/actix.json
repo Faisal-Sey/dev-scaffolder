@@ -1,0 +1,14 @@
+{
+  "name": "rust_actix",
+  "type": "text",
+  "message": "Actix template options",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

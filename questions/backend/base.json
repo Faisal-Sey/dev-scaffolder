@@ -6,9 +6,20 @@
     "Python",
     "Javascript",
     "Go",
-    "Rust"
+    "Rust",
+    "Java",
+    "C",
+    "C++",
+    "C#"
   ],
   "children": [
-    "backend/python/base.json"
+    "backend/python/base.json",
+    "backend/javascript/base.json",
+    "backend/java/base.json",
+    "backend/go/base.json",
+    "backend/rust/base.json",
+    "backend/c/base.json",
+    "backend/cpp/base.json",
+    "backend/csharp/base.json"
   ]
 }

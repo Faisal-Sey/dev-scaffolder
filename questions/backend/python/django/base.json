@@ -5,7 +5,17 @@
   "choices": [
     "Official",
     "Official (Configure App)",
-    "Custom Authentication"
+    "Rest Framework",
+    "Custom Auth",
+    "Docker",
+    "Database",
+    "Environment Config (.env)",
+    "Static Files (Whitenoise)",
+    "Background Tasks (Celery + Redis)",
+    "WebSockets (Channels)",
+    "CI/CD (GitHub Actions)",
+    "Testing (Pytest)",
+    "Logging & Monitoring"
   ],
   "children": []
 }

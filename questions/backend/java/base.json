@@ -1,0 +1,15 @@
+{
+  "name": "java",
+  "type": "list",
+  "message": "Choose java framework",
+  "choices": [
+    "Spring Boot",
+    "Quarkus",
+    "Micronaut"
+  ],
+  "children": [
+    "backend/java/spring_boot.json",
+    "backend/java/quarkus.json",
+    "backend/java/micronaut.json"
+  ]
+}

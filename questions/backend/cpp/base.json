@@ -1,0 +1,11 @@
+{
+  "name": "cpp",
+  "type": "list",
+  "message": "Choose C++ framework",
+  "choices": [
+    "Crow"
+  ],
+  "children": [
+    "backend/cpp/crow.json"
+  ]
+}

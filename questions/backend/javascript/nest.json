@@ -1,0 +1,14 @@
+{
+  "name": "javascript_nestjs",
+  "type": "text",
+  "message": "Choose nestjs template",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

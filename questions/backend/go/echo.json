@@ -1,0 +1,14 @@
+{
+  "name": "go_echo",
+  "type": "text",
+  "message": "Echo template options",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "javascript_express_js",
+  "type": "text",
+  "message": "Choose express template",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    },
+    {
+      "name": "use_typescript",
+      "type": "confirm",
+      "message": "Use TypeScript?",
+      "choices": []
+    }
+  ]
+}

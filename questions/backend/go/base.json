@@ -1,0 +1,13 @@
+{
+  "name": "go",
+  "type": "list",
+  "message": "Choose Go framework",
+  "choices": [
+    "Gin",
+    "Echo"
+  ],
+  "children": [
+    "backend/go/gin.json",
+    "backend/go/echo.json"
+  ]
+}

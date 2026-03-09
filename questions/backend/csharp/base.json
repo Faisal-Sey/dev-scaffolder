@@ -1,0 +1,13 @@
+{
+  "name": "csharp",
+  "type": "list",
+  "message": "Choose C# framework/setup",
+  "choices": [
+    "ASP.NET Core",
+    "Entity Framework Core"
+  ],
+  "children": [
+    "backend/csharp/aspnet_core.json",
+    "backend/csharp/ef_core.json"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "javascript",
+  "type": "list",
+  "message": "Choose javascript framework",
+  "choices": [
+    "Express.js",
+    "NestJS",
+    "Fastify"
+  ],
+  "children": [
+    "backend/javascript/express.json",
+    "backend/javascript/nest.json",
+    "backend/javascript/fastify.json"
+  ]
+}

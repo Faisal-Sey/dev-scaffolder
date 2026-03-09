@@ -1,0 +1,26 @@
+{
+  "name": "django_rest_framework",
+  "type": "text",
+  "message": "Choose django template",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    },
+    {
+      "name": "directory_name",
+      "type": "text",
+      "message": "Enter project directory name (leave it blank to use project name)",
+      "choices": []
+    },
+    {
+      "name": "app_name",
+      "type": "text",
+      "message": "Enter app name (leave it blank to avoid creating an app)",
+      "choices": []
+    }
+  ]
+}
