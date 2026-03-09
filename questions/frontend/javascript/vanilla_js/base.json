@@ -1,0 +1,12 @@
+{
+  "name": "vanilla_js",
+  "type": "list",
+  "message": "Choose Vanilla JS template",
+  "choices": [
+    "Basic",
+    "Vite",
+    "Webpack",
+    "Testing"
+  ],
+  "children": []
+}

@@ -1,0 +1,14 @@
+{
+  "name": "python_htmx_websockets",
+  "type": "text",
+  "message": "Configure Django + HTMX + WebSockets project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

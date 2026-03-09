@@ -1,0 +1,19 @@
+{
+  "name": "frontend",
+  "type": "list",
+  "message": "Choose frontend language",
+  "choices": [
+    "Javascript",
+    "Typescript",
+    "Dart",
+    "Kotlin",
+    "Swift"
+  ],
+  "children": [
+    "frontend/javascript/base.json",
+    "frontend/typescript/base.json",
+    "frontend/dart/base.json",
+    "frontend/kotlin/base.json",
+    "frontend/swift/base.json"
+  ]
+}

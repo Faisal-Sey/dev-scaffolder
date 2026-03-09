@@ -1,0 +1,14 @@
+{
+  "name": "python_fastapi_websockets",
+  "type": "text",
+  "message": "Configure FastAPI + WebSockets project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

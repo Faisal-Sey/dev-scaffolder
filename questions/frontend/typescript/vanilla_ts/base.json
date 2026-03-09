@@ -1,0 +1,12 @@
+{
+  "name": "vanilla_ts",
+  "type": "list",
+  "message": "Choose Vanilla TypeScript template",
+  "choices": [
+    "Basic",
+    "Vite",
+    "Webpack",
+    "Testing"
+  ],
+  "children": []
+}

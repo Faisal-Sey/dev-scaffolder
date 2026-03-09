@@ -1,0 +1,13 @@
+{
+  "name": "kotlin",
+  "type": "list",
+  "message": "Choose kotlin framework",
+  "choices": [
+    "Compose Multiplatform",
+    "Android Native"
+  ],
+  "children": [
+    "frontend/kotlin/compose.json",
+    "frontend/kotlin/android.json"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "javascript",
+  "type": "list",
+  "message": "Choose javascript framework",
+  "choices": [
+    "React",
+    "Vue",
+    "Angular",
+    "Svelte",
+    "Vanilla JS"
+  ],
+  "children": [
+    "frontend/javascript/react.json",
+    "frontend/javascript/vue.json",
+    "frontend/javascript/angular.json",
+    "frontend/javascript/svelte.json",
+    "frontend/javascript/vanilla_js/base.json"
+  ]
+}

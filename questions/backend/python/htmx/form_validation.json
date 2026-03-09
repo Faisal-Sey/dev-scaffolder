@@ -1,0 +1,14 @@
+{
+  "name": "python_htmx_form_validation",
+  "type": "text",
+  "message": "Configure Django + HTMX Form Validation project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

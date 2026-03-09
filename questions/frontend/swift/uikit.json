@@ -1,0 +1,14 @@
+{
+  "name": "swift_uikit",
+  "type": "text",
+  "message": "UIKit template configuration",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

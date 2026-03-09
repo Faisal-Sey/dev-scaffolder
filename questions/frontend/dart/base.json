@@ -1,0 +1,11 @@
+{
+  "name": "dart",
+  "type": "list",
+  "message": "Choose dart framework",
+  "choices": [
+    "Flutter"
+  ],
+  "children": [
+    "frontend/dart/flutter.json"
+  ]
+}

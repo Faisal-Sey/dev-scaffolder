@@ -6,11 +6,15 @@
     "Backend",
     "Frontend",
     "Fullstack",
+    "SSR (Server Side Rendering)",
     "CLI Tool",
     "Mobile App",
     "Library / Package"
   ],
   "children": [
-    "backend/base.json"
+    "backend/base.json",
+    "frontend/base.json",
+    "fullstack/base.json",
+    "ssr/base.json"
   ]
 }

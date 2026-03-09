@@ -1,0 +1,16 @@
+{
+  "name": "fastapi",
+  "type": "list",
+  "message": "Choose FastAPI template",
+  "choices": [
+    "Official",
+    "SQLAlchemy",
+    "Tortoise ORM",
+    "Docker",
+    "JWT Auth",
+    "Celery",
+    "WebSockets",
+    "Pytest"
+  ],
+  "children": []
+}

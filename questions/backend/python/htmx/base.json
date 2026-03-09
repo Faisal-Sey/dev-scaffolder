@@ -1,0 +1,15 @@
+{
+  "name": "htmx",
+  "type": "list",
+  "message": "Choose Django + HTMX template",
+  "choices": [
+    "Official",
+    "Alpine JS",
+    "Tailwind CSS",
+    "Docker",
+    "WebSockets",
+    "Form Validation",
+    "Auth"
+  ],
+  "children": []
+}

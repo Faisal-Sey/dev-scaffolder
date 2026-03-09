@@ -1,0 +1,14 @@
+{
+  "name": "python_fastapi_official",
+  "type": "text",
+  "message": "Configure FastAPI project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

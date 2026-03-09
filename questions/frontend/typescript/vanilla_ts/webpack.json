@@ -1,0 +1,14 @@
+{
+  "name": "typescript_vanilla_ts_webpack",
+  "type": "text",
+  "message": "Configure Vanilla TypeScript + Webpack project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

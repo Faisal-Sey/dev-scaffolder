@@ -1,0 +1,20 @@
+{
+  "name": "python_fastapi_jwt_auth",
+  "type": "text",
+  "message": "Configure FastAPI + JWT Auth project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    },
+    {
+      "name": "use_postgres",
+      "type": "confirm",
+      "message": "Use PostgreSQL (default: SQLite)?",
+      "choices": []
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "swift",
+  "type": "list",
+  "message": "Choose swift framework",
+  "choices": [
+    "SwiftUI",
+    "UIKit"
+  ],
+  "children": [
+    "frontend/swift/swiftui.json",
+    "frontend/swift/uikit.json"
+  ]
+}

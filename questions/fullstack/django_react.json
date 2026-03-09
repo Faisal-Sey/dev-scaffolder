@@ -1,0 +1,20 @@
+{
+  "name": "fullstack_django_react",
+  "type": "text",
+  "message": "Configure Django + React setup",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    },
+    {
+      "name": "use_docker",
+      "type": "confirm",
+      "message": "Use Docker?",
+      "choices": []
+    }
+  ]
+}

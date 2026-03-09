@@ -1,0 +1,15 @@
+{
+  "name": "fullstack",
+  "type": "list",
+  "message": "Choose fullstack template",
+  "choices": [
+    "Django + React",
+    "MERN Stack (MongoDB, Express, React, Node)",
+    "Next.js (Fullstack Framework)"
+  ],
+  "children": [
+    "fullstack/django_react.json",
+    "fullstack/mern.json",
+    "fullstack/nextjs.json"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "typescript_angular",
+  "type": "text",
+  "message": "Angular template configuration",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

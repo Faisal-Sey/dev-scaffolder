@@ -1,0 +1,14 @@
+{
+  "name": "python_fastapi_pytest",
+  "type": "text",
+  "message": "Configure FastAPI + Pytest project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "typescript_vanilla_ts_testing",
+  "type": "text",
+  "message": "Configure Vanilla TypeScript + Vitest project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

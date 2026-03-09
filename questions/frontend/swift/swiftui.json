@@ -1,0 +1,14 @@
+{
+  "name": "swift_swiftui",
+  "type": "text",
+  "message": "SwiftUI template configuration",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

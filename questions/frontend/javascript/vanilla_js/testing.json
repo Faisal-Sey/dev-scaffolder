@@ -1,0 +1,14 @@
+{
+  "name": "javascript_vanilla_js_testing",
+  "type": "text",
+  "message": "Configure Vanilla JS + Jest project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "ssr",
+  "type": "list",
+  "message": "Choose SSR template",
+  "choices": [
+    "Next.js",
+    "Nuxt.js",
+    "Remix",
+    "SvelteKit",
+    "Astro"
+  ],
+  "children": [
+    "ssr/nextjs.json",
+    "ssr/nuxtjs.json",
+    "ssr/remix.json",
+    "ssr/sveltekit.json",
+    "ssr/astro.json"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "typescript",
+  "type": "list",
+  "message": "Choose typescript framework",
+  "choices": [
+    "React",
+    "Vue",
+    "Angular",
+    "Svelte",
+    "Vanilla TS"
+  ],
+  "children": [
+    "frontend/typescript/react.json",
+    "frontend/typescript/vue.json",
+    "frontend/typescript/angular.json",
+    "frontend/typescript/svelte.json",
+    "frontend/typescript/vanilla_ts/base.json"
+  ]
+}

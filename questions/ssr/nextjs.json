@@ -1,0 +1,32 @@
+{
+  "name": "ssr_nextjs",
+  "type": "text",
+  "message": "Configure Next.js project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    },
+    {
+      "name": "use_typescript",
+      "type": "confirm",
+      "message": "Use TypeScript?",
+      "choices": []
+    },
+    {
+      "name": "use_tailwind",
+      "type": "confirm",
+      "message": "Use Tailwind CSS?",
+      "choices": []
+    },
+    {
+      "name": "use_app_router",
+      "type": "confirm",
+      "message": "Use App Router (recommended)?",
+      "choices": []
+    }
+  ]
+}

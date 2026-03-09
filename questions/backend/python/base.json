@@ -4,9 +4,12 @@
   "message": "Choose python framework",
   "choices": [
     "Django",
-    "FastAPI"
+    "FastAPI",
+    "HTMX"
   ],
   "children": [
-    "backend/python/django/base.json"
+    "backend/python/django/base.json",
+    "backend/python/fastapi/base.json",
+    "backend/python/htmx/base.json"
   ]
 }

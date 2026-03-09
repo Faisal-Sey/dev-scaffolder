@@ -1,0 +1,14 @@
+{
+  "name": "python_htmx_alpine_js",
+  "type": "text",
+  "message": "Configure Django + HTMX + Alpine.js project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    }
+  ]
+}
