@@ -1,0 +1,9 @@
+{
+  "name": "js_express_rest_api",
+  "type": "text",
+  "message": "Configure Express.js REST API",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

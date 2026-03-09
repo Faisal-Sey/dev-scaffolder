@@ -8,8 +8,8 @@
     "Fastify"
   ],
   "children": [
-    "backend/javascript/express.json",
-    "backend/javascript/nest.json",
-    "backend/javascript/fastify.json"
+    "backend/javascript/express.js/base.json",
+    "backend/javascript/nestjs/base.json",
+    "backend/javascript/fastify/base.json"
   ]
 }

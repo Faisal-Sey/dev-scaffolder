@@ -7,7 +7,7 @@
     "UIKit"
   ],
   "children": [
-    "frontend/swift/swiftui.json",
-    "frontend/swift/uikit.json"
+    "frontend/swift/swiftui/base.json",
+    "frontend/swift/uikit/base.json"
   ]
 }

@@ -10,10 +10,10 @@
     "Vanilla JS"
   ],
   "children": [
-    "frontend/javascript/react.json",
-    "frontend/javascript/vue.json",
-    "frontend/javascript/angular.json",
-    "frontend/javascript/svelte.json",
+    "frontend/javascript/react/base.json",
+    "frontend/javascript/vue/base.json",
+    "frontend/javascript/angular/base.json",
+    "frontend/javascript/svelte/base.json",
     "frontend/javascript/vanilla_js/base.json"
   ]
 }

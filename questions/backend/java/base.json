@@ -8,8 +8,8 @@
     "Micronaut"
   ],
   "children": [
-    "backend/java/spring_boot.json",
-    "backend/java/quarkus.json",
-    "backend/java/micronaut.json"
+    "backend/java/spring_boot/base.json",
+    "backend/java/quarkus/base.json",
+    "backend/java/micronaut/base.json"
   ]
 }

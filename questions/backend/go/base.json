@@ -7,7 +7,7 @@
     "Echo"
   ],
   "children": [
-    "backend/go/gin.json",
-    "backend/go/echo.json"
+    "backend/go/gin/base.json",
+    "backend/go/echo/base.json"
   ]
 }

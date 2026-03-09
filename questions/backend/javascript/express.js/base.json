@@ -1,0 +1,7 @@
+{
+  "name": "express.js",
+  "type": "select",
+  "message": "Select an Express.js template",
+  "choices": ["Official", "REST API", "Docker", "MongoDB", "PostgreSQL", "JWT Auth", "Testing"],
+  "children": []
+}

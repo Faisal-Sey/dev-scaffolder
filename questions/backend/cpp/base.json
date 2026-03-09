@@ -6,6 +6,6 @@
     "Crow"
   ],
   "children": [
-    "backend/cpp/crow.json"
+    "backend/cpp/crow/base.json"
   ]
 }

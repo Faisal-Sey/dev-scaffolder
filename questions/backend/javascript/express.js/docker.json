@@ -1,0 +1,9 @@
+{
+  "name": "js_express_docker",
+  "type": "text",
+  "message": "Configure Express.js Docker",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

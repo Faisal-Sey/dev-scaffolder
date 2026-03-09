@@ -1,0 +1,9 @@
+{
+  "name": "js_fastify_docker",
+  "type": "text",
+  "message": "Configure Fastify Docker",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

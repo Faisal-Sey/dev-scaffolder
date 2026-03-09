@@ -1,0 +1,9 @@
+{
+  "name": "csharp_aspnet_entity_framework",
+  "type": "text",
+  "message": "Configure C# ASP.NET Core Entity Framework",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

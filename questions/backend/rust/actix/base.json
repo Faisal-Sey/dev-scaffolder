@@ -1,0 +1,7 @@
+{
+  "name": "actix",
+  "type": "select",
+  "message": "Select an Actix template",
+  "choices": ["Official", "REST API", "Docker", "SQLx", "JWT Auth", "Testing"],
+  "children": []
+}

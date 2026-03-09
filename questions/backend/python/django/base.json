@@ -8,14 +8,14 @@
     "Rest Framework",
     "Custom Auth",
     "Docker",
-    "Database",
-    "Environment Config (.env)",
-    "Static Files (Whitenoise)",
-    "Background Tasks (Celery + Redis)",
+    "PostgreSQL",
+    "Environment Config",
+    "Static Files",
+    "Background Tasks (Celery)",
     "WebSockets (Channels)",
     "CI/CD (GitHub Actions)",
     "Testing (Pytest)",
-    "Logging & Monitoring"
+    "Logging and Monitoring"
   ],
   "children": []
 }

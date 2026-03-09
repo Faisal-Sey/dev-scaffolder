@@ -1,0 +1,9 @@
+{
+  "name": "js_nest_websockets",
+  "type": "text",
+  "message": "Configure NestJS WebSockets",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

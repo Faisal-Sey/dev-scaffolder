@@ -1,0 +1,7 @@
+{
+  "name": "micronaut",
+  "type": "select",
+  "message": "Select a Micronaut template",
+  "choices": ["Official", "REST API", "Data JPA", "Docker", "JWT Auth", "Testing"],
+  "children": []
+}

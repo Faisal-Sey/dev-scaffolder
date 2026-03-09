@@ -1,0 +1,7 @@
+{
+  "name": "nestjs",
+  "type": "select",
+  "message": "Select a NestJS template",
+  "choices": ["Official", "REST API", "TypeORM", "Docker", "JWT Auth", "GraphQL", "WebSockets", "Testing"],
+  "children": []
+}

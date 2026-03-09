@@ -3,11 +3,11 @@
   "type": "list",
   "message": "Choose kotlin framework",
   "choices": [
-    "Compose Multiplatform",
-    "Android Native"
+    "Compose",
+    "Android"
   ],
   "children": [
-    "frontend/kotlin/compose.json",
-    "frontend/kotlin/android.json"
+    "frontend/kotlin/compose/base.json",
+    "frontend/kotlin/android/base.json"
   ]
 }

@@ -6,6 +6,6 @@
     "Flutter"
   ],
   "children": [
-    "frontend/dart/flutter.json"
+    "frontend/dart/flutter/base.json"
   ]
 }

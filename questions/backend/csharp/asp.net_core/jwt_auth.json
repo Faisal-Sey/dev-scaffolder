@@ -1,0 +1,9 @@
+{
+  "name": "csharp_aspnet_jwt_auth",
+  "type": "text",
+  "message": "Configure C# ASP.NET Core JWT Auth",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

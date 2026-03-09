@@ -6,6 +6,6 @@
     "Minimal"
   ],
   "children": [
-    "backend/c/minimal.json"
+    "backend/c/minimal/base.json"
   ]
 }

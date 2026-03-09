@@ -7,7 +7,7 @@
     "Entity Framework Core"
   ],
   "children": [
-    "backend/csharp/aspnet_core.json",
-    "backend/csharp/ef_core.json"
+    "backend/csharp/asp.net_core/base.json",
+    "backend/csharp/entity_framework_core/base.json"
   ]
 }

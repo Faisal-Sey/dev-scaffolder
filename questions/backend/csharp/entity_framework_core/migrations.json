@@ -1,0 +1,9 @@
+{
+  "name": "csharp_ef_migrations",
+  "type": "text",
+  "message": "Configure C# Entity Framework Core Migrations",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

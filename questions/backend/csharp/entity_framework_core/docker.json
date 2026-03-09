@@ -1,0 +1,9 @@
+{
+  "name": "csharp_ef_docker",
+  "type": "text",
+  "message": "Configure C# Entity Framework Core Docker",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

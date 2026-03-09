@@ -1,0 +1,9 @@
+{
+  "name": "rust_rocket_diesel",
+  "type": "text",
+  "message": "Configure Rust Rocket Diesel",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

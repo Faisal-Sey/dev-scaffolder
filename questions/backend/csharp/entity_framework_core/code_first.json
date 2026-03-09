@@ -1,0 +1,9 @@
+{
+  "name": "csharp_ef_code_first",
+  "type": "text",
+  "message": "Configure C# Entity Framework Core Code First",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

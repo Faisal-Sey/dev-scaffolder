@@ -1,0 +1,9 @@
+{
+  "name": "rust_actix_sqlx",
+  "type": "text",
+  "message": "Configure Rust Actix SQLx",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

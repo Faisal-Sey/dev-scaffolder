@@ -1,0 +1,9 @@
+{
+  "name": "java_micronaut_official",
+  "type": "text",
+  "message": "Configure Java Micronaut Official",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

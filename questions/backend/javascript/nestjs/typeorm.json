@@ -1,0 +1,9 @@
+{
+  "name": "js_nest_typeorm",
+  "type": "text",
+  "message": "Configure NestJS TypeORM",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

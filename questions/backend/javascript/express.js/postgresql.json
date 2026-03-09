@@ -1,0 +1,9 @@
+{
+  "name": "js_express_postgresql",
+  "type": "text",
+  "message": "Configure Express.js PostgreSQL",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

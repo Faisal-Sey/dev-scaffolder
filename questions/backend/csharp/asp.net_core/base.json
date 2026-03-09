@@ -1,0 +1,7 @@
+{
+  "name": "asp.net_core",
+  "type": "select",
+  "message": "Select an ASP.NET Core template",
+  "choices": ["Official", "REST API", "Entity Framework", "Docker", "JWT Auth", "SignalR", "Testing"],
+  "children": []
+}

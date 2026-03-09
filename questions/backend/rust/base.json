@@ -7,7 +7,7 @@
     "Rocket"
   ],
   "children": [
-    "backend/rust/actix.json",
-    "backend/rust/rocket.json"
+    "backend/rust/actix/base.json",
+    "backend/rust/rocket/base.json"
   ]
 }

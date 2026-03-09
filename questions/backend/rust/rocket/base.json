@@ -1,0 +1,7 @@
+{
+  "name": "rocket",
+  "type": "select",
+  "message": "Select a Rocket template",
+  "choices": ["Official", "REST API", "Docker", "Diesel", "Testing"],
+  "children": []
+}

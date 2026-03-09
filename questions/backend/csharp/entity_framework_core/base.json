@@ -1,0 +1,7 @@
+{
+  "name": "entity_framework_core",
+  "type": "select",
+  "message": "Select an Entity Framework Core template",
+  "choices": ["Official", "Code First", "Database First", "Migrations", "Docker"],
+  "children": []
+}

@@ -1,0 +1,7 @@
+{
+  "name": "fastify",
+  "type": "select",
+  "message": "Select a Fastify template",
+  "choices": ["Official", "REST API", "Docker", "Prisma", "JWT Auth", "Testing"],
+  "children": []
+}

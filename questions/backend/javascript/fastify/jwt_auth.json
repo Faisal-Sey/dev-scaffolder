@@ -1,0 +1,9 @@
+{
+  "name": "js_fastify_jwt_auth",
+  "type": "text",
+  "message": "Configure Fastify JWT Auth",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

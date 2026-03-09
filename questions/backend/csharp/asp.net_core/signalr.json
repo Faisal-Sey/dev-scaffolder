@@ -1,0 +1,9 @@
+{
+  "name": "csharp_aspnet_signalr",
+  "type": "text",
+  "message": "Configure C# ASP.NET Core SignalR",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

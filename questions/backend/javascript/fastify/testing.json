@@ -1,0 +1,9 @@
+{
+  "name": "js_fastify_testing",
+  "type": "text",
+  "message": "Configure Fastify Testing",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

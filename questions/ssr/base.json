@@ -10,10 +10,10 @@
     "Astro"
   ],
   "children": [
-    "ssr/nextjs.json",
-    "ssr/nuxtjs.json",
-    "ssr/remix.json",
-    "ssr/sveltekit.json",
-    "ssr/astro.json"
+    "ssr/next.js/base.json",
+    "ssr/nuxt.js/base.json",
+    "ssr/remix/base.json",
+    "ssr/sveltekit/base.json",
+    "ssr/astro/base.json"
   ]
 }

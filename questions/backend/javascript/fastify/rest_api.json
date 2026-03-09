@@ -1,0 +1,9 @@
+{
+  "name": "js_fastify_rest_api",
+  "type": "text",
+  "message": "Configure Fastify REST API",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "rust_rocket_official",
+  "type": "text",
+  "message": "Configure Rust Rocket Official",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}

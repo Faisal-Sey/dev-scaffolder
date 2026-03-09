@@ -1,0 +1,9 @@
+{
+  "name": "js_nest_graphql",
+  "type": "text",
+  "message": "Configure NestJS GraphQL",
+  "choices": [],
+  "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []}
+  ]
+}
