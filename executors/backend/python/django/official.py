@@ -52,8 +52,21 @@ class DjangoOfficialExecutor(BaseExecutor):
         self.console.print("[bold green]Django installed successfully[/bold green]")
         return ExecutorResponseStatus(success=True)
 
-    def _add_packages_to_requirements_txt(self, venv_python_executor: str, project_name: str) -> None:
-        os.chdir(os.path.join(self.current_folder, project_name))
+    def add_packages_to_requirements_txt(self, venv_python_executor: str, directory_full_path: str) -> None:
+        """
+        Generates a requirements.txt file for the Django project.
+
+        Changes to the project directory, runs 'pip freeze' to capture all installed
+        packages, writes them to requirements.txt, and returns to the original directory.
+
+        :param venv_python_executor: Path to the virtual environment Python executable.
+        :type venv_python_executor: str
+        :param directory_full_path: Absolute path to the Django project directory.
+        :type directory_full_path: str
+        :return: None
+        :rtype: None
+        """
+        os.chdir(directory_full_path)
         result = subprocess.run(
             [venv_python_executor, '-m', 'pip', 'freeze'],
             capture_output=True,
@@ -64,8 +77,12 @@ class DjangoOfficialExecutor(BaseExecutor):
             f.write(result.stdout)
         os.chdir(self.current_folder)
 
-    def _create_django_project(self, project_name: str, directory_name: str) -> ExecutorResponseStatus:
-        create_project_command = ['django-admin', 'startproject', project_name, directory_name]
+    def _create_django_project(
+            self, venv_python_executor: str, project_name: str, directory_full_path: str
+    ) -> ExecutorResponseStatus:
+        create_project_command = [
+            venv_python_executor, '-m', 'django', 'startproject', project_name, directory_full_path
+        ]
         if not run_subprocess_command(create_project_command):
             self.console.print("[bold red]Failed to create django project[/bold red]")
             return ExecutorResponseStatus(success=False)
@@ -73,9 +90,11 @@ class DjangoOfficialExecutor(BaseExecutor):
         self.console.print(f"[bold green]Django project {project_name} created successfully.[/bold green]")
         return ExecutorResponseStatus(success=True)
 
-    def _create_django_app(self, app_name: str, project_directory: str) -> ExecutorResponseStatus:
+    def _create_django_app(
+            self, venv_python_executor: str, app_name: str, project_directory: str
+    ) -> ExecutorResponseStatus:
         os.chdir(project_directory)
-        create_app_command = ['django-admin', 'startapp', app_name]
+        create_app_command = [venv_python_executor, '-m', 'django', 'startapp', app_name]
 
         if app_name:
             if not run_subprocess_command(create_app_command):
@@ -104,8 +123,9 @@ class DjangoOfficialExecutor(BaseExecutor):
         project_name = kwargs["project_name"]
         directory_name = kwargs["directory_name"]
         app_name = kwargs["app_name"]
+        directory_full_path = cast(str, os.path.join(self.current_folder, directory_name))
 
-        venv_python_executor = get_venv_python_executor()
+        venv_python_executor = self.get_venv_environment()
 
         self._update_status("[bold blue]Installing dependencies...[/bold blue]")
         installation_response = self.install_dependencies(venv_python_executor)
@@ -114,17 +134,16 @@ class DjangoOfficialExecutor(BaseExecutor):
             return ExecutorResponseStatus(success=False)
 
         self._update_status(f"[bold blue]Creating Django project '{project_name}'...[/bold blue]")
-        project_creation_response = self._create_django_project(project_name, directory_name)
+        project_creation_response = self._create_django_project(venv_python_executor, project_name, directory_full_path)
         if not project_creation_response.success:
             self.console.print("[bold red]Failed to create django project[/bold red]")
             return ExecutorResponseStatus(success=False)
 
         self._update_status("[bold blue]Generating requirements.txt...[/bold blue]")
-        self._add_packages_to_requirements_txt(venv_python_executor, project_name)
+        self.add_packages_to_requirements_txt(venv_python_executor, directory_full_path)
 
-        project_directory = cast(str, os.path.join(self.current_folder, directory_name))
         self._update_status(f"[bold blue]Creating Django app '{app_name}'...[/bold blue]")
-        app_creation_response = self._create_django_app(app_name, project_directory)
+        app_creation_response = self._create_django_app(venv_python_executor, app_name, directory_full_path)
         if not app_creation_response.success:
             self.console.print("[bold yellow]Project created successfully. Failed at app creation[/bold yellow]")
             return ExecutorResponseStatus(success=True, message="APP_CREATION_FAILED")

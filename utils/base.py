@@ -5,7 +5,11 @@ import subprocess
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 
+from rich.console import Console
 from typings.base import SubProcessReturnCodeEnum, WriteToFileContent, ExecutorResponseStatus
+from utils.env import get_venv_directory
+
+console = Console()
 
 root_folder = Path(__file__).parent.parent
 
@@ -54,10 +58,10 @@ def open_a_json_file(file_path: str) -> Optional[Dict[str, Any]]:
         with open(file_path, 'r') as file:
             return json.load(file)
     except FileNotFoundError:
-        print(f"Warning: Questions file not found: {file_path}")
+        console.print(f"[bold yellow]Warning:[/bold yellow] Questions file not found: [cyan]{file_path}[/cyan]")
         return None
     except json.JSONDecodeError as e:
-        print(f"Warning: Invalid JSON in {file_path}: {e}")
+        console.print(f"[bold yellow]Warning:[/bold yellow] Invalid JSON in [cyan]{file_path}[/cyan]: {e}")
         return None
 
 
@@ -94,16 +98,18 @@ def check_or_create_venv() -> None:
     Checks if a Python virtual environment (venv) exists in the specified directory and
     creates a new one if it does not already exist.
 
-    This function ensures that a virtual environment is set up in the 'venv' subdirectory
-    within the root folder. If the directory does not exist, it creates the environment
-    using the `venv` module and the current Python interpreter.
+    The venv location is environment-aware: in development it is created under
+    <project_root>/temp/venv; in all other environments under <project_root>/venv.
 
-    :param None: This function does not accept any parameters.
     :return: None
     """
-    full_venv_path = os.path.join(root_folder, 'venv')
+    full_venv_path = get_venv_directory()
     if not os.path.exists(full_venv_path):
-        subprocess.run([sys.executable, '-m venv venv'])
+        console.print(f"[bold blue]Creating virtual environment at[/bold blue] [cyan]{full_venv_path}[/cyan]")
+        subprocess.run([sys.executable, '-m', 'venv', full_venv_path])
+        console.print("[bold green]Virtual environment created successfully[/bold green]")
+    else:
+        console.print(f"[dim]Virtual environment already exists at [cyan]{full_venv_path}[/cyan][/dim]")
 
 
 def get_venv_python_executor() -> str:
@@ -112,10 +118,13 @@ def get_venv_python_executor() -> str:
     the appropriate path based on the current operating system, considering differences in file
     structure between Windows and other platforms.
 
+    The venv location is environment-aware: in development it resolves to
+    <project_root>/temp/venv; in all other environments to <project_root>/venv.
+
     :return: The absolute path to the virtual environment's Python executor.
     :rtype: str
     """
-    full_venv_path = os.path.join(root_folder, 'venv')
+    full_venv_path = get_venv_directory()
     if sys.platform == "win32":
         python_path = os.path.join(full_venv_path, "Scripts", "python.exe")
     else:
@@ -133,11 +142,13 @@ def run_subprocess_command(script: List[str]) -> bool:
         )
 
         if command_result.returncode != SubProcessReturnCodeEnum.SUCCESS.value:
+            console.print(f"[bold red]Command failed with code {command_result.returncode}[/bold red]")
+            console.print(f"[red]Error output:[/red] {command_result.stderr}")
             return False
 
         return True
     except Exception as e:
-        print(f"Error running subprocess: {e}")
+        console.print(f"[bold red]Error:[/bold red] Subprocess failed: {e}")
         return False
 
 
@@ -145,15 +156,13 @@ def activate_venv() -> None:
     is_activated = False
 
     # Windows-specific environment
-    scripts_path = os.path.join(root_folder, 'venv', 'Scripts')
+    scripts_path = os.path.join(get_venv_directory(), 'Scripts')
 
     if os.path.exists(scripts_path):
         # run bat
         ps1_script = os.path.join(scripts_path, 'Activate.ps1')
         bat_script = os.path.join(scripts_path, 'activate.bat')
         activate_script = os.path.join(scripts_path, 'activate')
-
-        print("script", ps1_script)
 
         if os.path.exists(ps1_script):
             is_activated = run_subprocess_command([
@@ -168,7 +177,7 @@ def activate_venv() -> None:
 
     else:
         # Unix-specific environment
-        bin_path = os.path.join(root_folder, 'venv', 'bin')
+        bin_path = os.path.join(get_venv_directory(), 'bin')
 
         fish_file = os.path.join(bin_path, 'activate.fish')
         csh_file = os.path.join(bin_path, 'activate.csh')
@@ -184,9 +193,9 @@ def activate_venv() -> None:
 
 
     if is_activated:
-        print("Virtual environment activated successfully")
+        console.print("[bold green]Virtual environment activated successfully[/bold green]")
     else:
-        print("Failed to activate virtual environment")
+        console.print("[bold red]Failed to activate virtual environment[/bold red]")
 
     return None
 
@@ -200,7 +209,7 @@ def write_into_file(path: str, contents: List[WriteToFileContent]) -> ExecutorRe
             lines = f.readlines()
 
     except FileNotFoundError:
-        print(f"Failed to write into {path}")
+        console.print(f"[bold red]Error:[/bold red] File not found for reading: [cyan]{path}[/cyan]")
         return ExecutorResponseStatus(success=False)
 
     if len(contents) > 0:
@@ -215,9 +224,10 @@ def write_into_file(path: str, contents: List[WriteToFileContent]) -> ExecutorRe
         if is_modified:
             with open(path, "w") as f:
                 f.writelines(lines)
+            console.print(f"[bold green]File updated successfully:[/bold green] [cyan]{path}[/cyan]")
 
         return ExecutorResponseStatus(success=True)
 
     except FileNotFoundError:
-        print(f"Failed to write into {path}")
+        console.print(f"[bold red]Error:[/bold red] File not found for writing: [cyan]{path}[/cyan]")
         return ExecutorResponseStatus(success=False)

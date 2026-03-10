@@ -14,6 +14,7 @@ from rich.console import Console
 from rich.status import Status
 
 from typings.base import ExecutorResponseStatus
+from utils.env import get_output_directory
 
 
 class BaseExecutor(ABC):
@@ -32,7 +33,7 @@ class BaseExecutor(ABC):
     """
 
     def __init__(self):
-        self.current_folder = os.getcwd()
+        self.current_folder = get_output_directory()
         self.console = Console()
         self._status: Optional[Status] = None
 

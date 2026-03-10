@@ -1,10 +1,17 @@
 import sys
 import os
+from pathlib import Path
+
 import inquirer
 from typing import Optional, Dict, List
+
+from dotenv import load_dotenv
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
+
+root_folder = Path(__file__).parent.parent.parent
+load_dotenv(dotenv_path=root_folder / ".env")
 
 # Add project root to sys.path to resolve internal modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
