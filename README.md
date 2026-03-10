@@ -99,6 +99,35 @@ All executors inherit from `BaseExecutor` (`executors/base.py`) and must impleme
 
 The public entry point is `run(**kwargs)`, which wraps `generate()` with a `rich` loading spinner. Use `self._stop_status()` / `self._start_status()` around any interactive `inquirer` prompts inside your executor to prevent the spinner from blocking user input. Use `self._update_status(message)` to update the spinner label as execution progresses through steps.
 
+### Adding a New Executor
+
+1. Create a JSON file in `questions/` defining the configuration options for the new template.
+2. Link it to the existing question tree via `questions/base.json`.
+3. Create a Python file in the corresponding `executors/` path and subclass `BaseExecutor`:
+
+```python
+from executors.base import BaseExecutor
+from typings.base import ExecutorResponseStatus
+
+class MyFrameworkExecutor(BaseExecutor):
+
+    def get_venv_environment(self) -> str:
+        ...
+
+    def install_dependencies(self, venv_python_executor: str) -> ExecutorResponseStatus:
+        ...
+
+    def execute_creation_commands(self, **kwargs) -> ExecutorResponseStatus:
+        ...
+
+    def generate(self, **kwargs):
+        ...
+
+if __name__ == '__main__':
+    args = MyFrameworkExecutor.build_arg_parser().parse_args()
+    MyFrameworkExecutor().run(**vars(args))
+```
+
 ## Contributing
 
 ### Branching
