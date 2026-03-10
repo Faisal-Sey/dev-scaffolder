@@ -83,8 +83,4 @@ def resolve_final_choices(answer_path: str):
     )
     executor_file = generate_executor_file(answer_path)
 
-    with console.status(
-            f"[bold blue]Executing template for {answer_path}...",
-            spinner="bouncingBar"
-    ):
-        run_python_file(executor_file, template_answers)
+    run_python_file(executor_file, template_answers)
