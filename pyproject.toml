@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -45,6 +45,10 @@ dependencies = [
 
 [project.scripts]
 dev-scaffolder = "scripts.scaffolder.scaffolder:main"
+
+[project.urls]
+Homepage = "https://github.com/Faisal-Sey/dev-scaffolder"
+Issues = "https://github.com/Faisal-Sey/dev-scaffolder/issues"
 
 [tool.setuptools.packages.find]
 exclude = [
