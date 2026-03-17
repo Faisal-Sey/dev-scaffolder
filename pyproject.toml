@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dev-scaffolder"
+version = "0.0.2"
+description = "A dynamic, interactive CLI-based project generator with a tree-based question system and custom template executors."
+readme = "README.md"
+authors = [
+    { name = "Faisal Issaka", email = "phaisalsey6@gmail.com" }
+]
+requires-python = ">=3.8"
+license = "MIT AND (Apache-2.0 OR BSD-2-Clause)"
+keywords = ["scaffolder", "cli", "project-generator", "templates"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Code Generators",
+]
+
+dependencies = [
+    "ansicon==1.89.0",
+    "blessed==1.33.0",
+    "editor==1.7.0",
+    "inquirer==3.4.1",
+    "jinxed==1.3.0",
+    "markdown-it-py==4.0.0",
+    "mdurl==0.1.2",
+    "Pygments==2.19.2",
+    "python-dotenv==1.2.2",
+    "readchar==4.2.1",
+    "rich==14.3.3",
+    "runs==1.3.0",
+    "wcwidth==0.6.0",
+    "xmod==1.9.0",
+]
+
+[project.scripts]
+dev-scaffolder = "scripts.scaffolder.scaffolder:main"
+
+[tool.setuptools.packages.find]
+exclude = [
+    "venv*",
+    "temp*",
+    "*.egg-info",
+    ".env",
+    ".env*",
+    ".idea",
+    ".vscode",
+    ".git",
+    "*__pycache__*",
+    "*.pyc",
+    "dist",
+    "build"
+]
+
+[tool.setuptools.package-data]
+"*" = ["*.json"]

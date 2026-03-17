@@ -133,12 +133,13 @@ def get_venv_python_executor() -> str:
     return python_path
 
 
-def run_subprocess_command(script: List[str]) -> bool:
+def run_subprocess_command(script: List[str], cwd: Optional[str] = None) -> bool:
     try:
         command_result = subprocess.run(
             script,
             capture_output=True,
-            text=True
+            text=True,
+            cwd=cwd
         )
 
         if command_result.returncode != SubProcessReturnCodeEnum.SUCCESS.value:

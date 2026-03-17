@@ -80,10 +80,12 @@ class DjangoOfficialExecutor(BaseExecutor):
     def _create_django_project(
             self, venv_python_executor: str, project_name: str, directory_full_path: str
     ) -> ExecutorResponseStatus:
+        # log current directory
+        self.console.print(f"[bold green]Installing django project at: {os.getcwd()}[/bold green]")
         create_project_command = [
             venv_python_executor, '-m', 'django', 'startproject', project_name, directory_full_path
         ]
-        if not run_subprocess_command(create_project_command):
+        if not run_subprocess_command(create_project_command, cwd=directory_full_path):
             self.console.print("[bold red]Failed to create django project[/bold red]")
             return ExecutorResponseStatus(success=False)
 

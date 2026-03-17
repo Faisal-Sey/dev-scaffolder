@@ -1,3 +1,5 @@
 .idea
 .env
 temp
+
+dev_scaffolder.egg-info

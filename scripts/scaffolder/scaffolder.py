@@ -1,3 +1,4 @@
+import argparse
 import sys
 import os
 from pathlib import Path
@@ -89,5 +90,45 @@ def run_scaffolder():
         current_question = next_question
 
 
+def print_help():
+    """Display a rich-formatted help panel."""
+    console.print(Panel(
+        Text("DevScaffolder - Help", style="bold blue", justify="center"),
+        subtitle="[bold white]Available Commands[/bold white]"
+    ))
+    console.print()
+    console.print("  [bold cyan]run[/bold cyan]    Start the interactive project scaffolder")
+    console.print("  [bold cyan]help[/bold cyan]   Show this help message")
+    console.print()
+    console.print("[dim]Usage:[/dim]")
+    console.print("  [bold]python scripts/scaffolder/scaffolder.py run[/bold]")
+    console.print("  [bold]dev-scaffolder run[/bold]  [dim](after pip install)[/dim]")
+    console.print()
+    console.print("[dim]Environment:[/dim]")
+    console.print("  Set [bold]ENVIRONMENT=development[/bold] in [italic].env[/italic] to output to [italic]temp/[/italic]")
+    console.print("  Set [bold]ENVIRONMENT=production[/bold]  to output to the current working directory")
+    console.print()
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="DevScaffolder - Create project scaffolding",
+        add_help=False,
+    )
+    subparsers = parser.add_subparsers(dest="command")
+    subparsers.add_parser("run", help="Start the interactive project scaffolder")
+    subparsers.add_parser("help", help="Show help information")
+
+    args = parser.parse_args()
+
+    if args.command == "run":
+        run_scaffolder()
+    elif args.command == "help":
+        print_help()
+    else:
+        print_help()
+        sys.exit(1 if args.command else 0)
+
+
 if __name__ == "__main__":
-    run_scaffolder()
+    main()
