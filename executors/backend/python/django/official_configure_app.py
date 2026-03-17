@@ -1,6 +1,7 @@
 import argparse
 import sys
 import os
+import re
 
 # Add the project root to sys.path
 sys.path.append(
@@ -94,6 +95,49 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
                 f"[bold red]File was not found at {project_urls_path}[/bold red]"
             )
 
+    def _insert_app_re(self, content: str, new_app: str) -> str:
+        """Installed app insertion using regex"""
+
+        pattern = r'(INSTALLED_APPS\s*=\s*\[)(.*?)(\])'
+
+        def insert_app(match):
+            prefix = match.group(1)
+            apps_content = match.group(2)
+            suffix = match.group(3)
+
+            # Clean up the apps content
+            apps_content = apps_content.rstrip()
+
+            # Add comma if there are existing apps
+            if apps_content.strip():
+                # Add a comma after the last app if needed
+                if apps_content.strip() and not apps_content.strip().endswith(','):
+                    apps_content += ','
+                new_content = f"{prefix}{apps_content}\n    '{new_app}',\n{suffix}"
+            else:
+                # Empty list
+                new_content = f"{prefix}\n    '{new_app}',\n{suffix}"
+
+            return new_content
+
+        return re.sub(pattern, insert_app, content, flags=re.DOTALL)
+
+    def _configure_app_in_installed_apps(self, path: str, directory_name: str, app_name: str) -> None:
+        project_settings_path = os.path.join(path, directory_name, "settings.py")
+        try:
+            with open(project_settings_path, 'r') as f:
+                content = f.read()
+
+            modified_content = self._insert_app_re(content, app_name)
+
+            with open(project_settings_path, "w") as f:
+                f.write(modified_content)
+
+        except FileNotFoundError:
+            self.console.print(
+                f"[bold red]File was not found at {project_settings_path}[/bold red]"
+            )
+
     def _modify_views_py(self, path: str, app_name: str) -> None:
         views_file = os.path.join(path, app_name, "views.py")
         write_into_file(
@@ -118,6 +162,7 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
         self._modify_views_py(path, app_name)
         self._create_app_urls_py(path, app_name)
         self._integrate_app_url_into_project(path, directory_name, app_name)
+        self._configure_app_in_installed_apps(path, directory_name, app_name)
 
         venv_python_executor = get_venv_python_executor()
 
