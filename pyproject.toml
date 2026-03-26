@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dev-scaffolder"
-version = "0.0.2"
+version = "0.0.1"
 description = "A dynamic, interactive CLI-based project generator with a tree-based question system and custom template executors."
 readme = "README.md"
 authors = [
@@ -50,7 +50,11 @@ dev-scaffolder = "scripts.scaffolder.scaffolder:main"
 Homepage = "https://github.com/Faisal-Sey/dev-scaffolder"
 Issues = "https://github.com/Faisal-Sey/dev-scaffolder/issues"
 
+[tool.setuptools.package-dir]
+"" = "src/dev-scaffolder"
+
 [tool.setuptools.packages.find]
+where = ["src/dev-scaffolder"]
 exclude = [
     "venv*",
     "temp*",

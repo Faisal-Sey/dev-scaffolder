@@ -106,8 +106,9 @@ The public entry point is `run(**kwargs)`, which wraps `generate()` with a `rich
 3. Create a Python file in the corresponding `executors/` path and subclass `BaseExecutor`:
 
 ```python
-from executors.base import BaseExecutor
+from src.executors.base import BaseExecutor
 from typings.base import ExecutorResponseStatus
+
 
 class MyFrameworkExecutor(BaseExecutor):
 
@@ -122,6 +123,7 @@ class MyFrameworkExecutor(BaseExecutor):
 
     def generate(self, **kwargs):
         ...
+
 
 if __name__ == '__main__':
     args = MyFrameworkExecutor.build_arg_parser().parse_args()
