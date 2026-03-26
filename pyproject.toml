@@ -11,7 +11,7 @@ authors = [
     { name = "Faisal Issaka", email = "phaisalsey6@gmail.com" }
 ]
 requires-python = ">=3.8"
-license = "MIT AND (Apache-2.0 OR BSD-2-Clause)"
+license = { file = "LICENSE" }
 keywords = ["scaffolder", "cli", "project-generator", "templates"]
 classifiers = [
     "Development Status :: 4 - Beta",
