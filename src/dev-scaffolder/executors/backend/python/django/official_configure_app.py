@@ -15,6 +15,8 @@ from batteries.django import (
     CorsHeadersBattery,
     RestFrameworkBattery,
     PostgreSQLBattery,
+    PythonDotenvBattery,
+    DjangoEnvironBattery,
 )
 from typings.base import (
     DjangoOfficialTemplateArgs,
@@ -242,6 +244,8 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
         'rest framework': RestFrameworkBattery,
         'cors headers': CorsHeadersBattery,
         'postgresql': PostgreSQLBattery,
+        'python dotenv': PythonDotenvBattery,
+        'django environ': DjangoEnvironBattery,
     }
 
     def _parse_batteries(self, batteries_str: str) -> List[BaseBattery]:

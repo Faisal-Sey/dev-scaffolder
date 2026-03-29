@@ -69,6 +69,33 @@ DJANGO_POSTGRESQL_ENV_EXAMPLE = (
     "DB_PORT=5432\n"
 )
 
+DJANGO_DOTENV_IMPORT = (
+    "\nfrom dotenv import load_dotenv\n"
+    "\nload_dotenv()\n"
+)
+
+DJANGO_DOTENV_ENV_EXAMPLE = (
+    "\n# Django\n"
+    "SECRET_KEY=your-secret-key-here\n"
+    "DEBUG=True\n"
+    "ALLOWED_HOSTS=localhost,127.0.0.1\n"
+)
+
+DJANGO_ENVIRON_SETUP = (
+    "\nimport environ\n"
+    "\nenv = environ.Env(\n"
+    "    DEBUG=(bool, False),\n"
+    ")\n"
+    "environ.Env.read_env(BASE_DIR / '.env')\n"
+)
+
+DJANGO_ENVIRON_ENV_EXAMPLE = (
+    "\n# Django\n"
+    "SECRET_KEY=your-secret-key-here\n"
+    "DEBUG=True\n"
+    "ALLOWED_HOSTS=localhost,127.0.0.1\n"
+)
+
 DJANGO_CORS_SETTINGS = (
     "\n\n# django-cors-headers configuration\n"
     "CORS_ALLOW_CREDENTIALS = False\n"
