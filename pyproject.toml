@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools >= 75.0.0"]
+requires = ["setuptools >= 75.0.0", "setuptools-scm >= 8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "dev-scaffolder"
-version = "0.0.1"
+dynamic = ["version"]
 description = "A dynamic, interactive CLI-based project generator with a tree-based question system and custom template executors."
 readme = "README.md"
 authors = [
@@ -69,6 +69,8 @@ exclude = [
     "dist",
     "build"
 ]
+
+[tool.setuptools_scm]
 
 [tool.setuptools.package-data]
 "*" = ["*.json"]
