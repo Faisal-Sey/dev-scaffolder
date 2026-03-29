@@ -20,41 +20,37 @@ jobs:
           EXECUTORS_DIR="src/dev-scaffolder/executors"
 
           find "$EXECUTORS_DIR" -name "*.py" ! -name "__init__.py" | sort | while read filepath; do
-            # Strip leading directory to get relative path
             relative="${filepath#$EXECUTORS_DIR/}"
-            # Derive category (first path segment: backend, frontend, fullstack, ssr)
             category=$(echo "$relative" | cut -d'/' -f1)
-            # Derive feature name from filename without extension
             feature=$(basename "$filepath" .py)
-            # Derive framework path (everything between category and filename)
             framework=$(echo "$relative" | rev | cut -d'/' -f2- | rev | cut -d'/' -f2-)
-
             title="Implement executor: $relative"
 
-            # Skip if issue with this title already exists
             existing=$(gh issue list --state all --search "\"$title\" in:title" --json title --jq '.[0].title')
             if [ "$existing" = "$title" ]; then
               echo "SKIP (exists): $title"
               continue
             fi
 
-            body="## Executor: \`$feature\`
+            cat > /tmp/issue_body.md << BODY
+          ## Executor: \`$feature\`
 
-**File:** \`$filepath\`
-**Category:** \`$category\`
-**Framework/Stack:** \`$framework\`
+          **File:** \`$filepath\`
+          **Category:** \`$category\`
+          **Framework/Stack:** \`$framework\`
 
-### Task
-Implement the \`generate_template\` function in \`$filepath\` so that it scaffolds a working \`$feature\` setup for a \`$framework\` project.
+          ### Task
+          Implement the \`generate_template\` function in \`$filepath\` so that it scaffolds a working \`$feature\` setup for a \`$framework\` project.
 
-### Acceptance Criteria
-- [ ] \`generate_template\` produces the correct files/directories
-- [ ] Generated output is tested or manually verified
-- [ ] No placeholder \`print\` statements remain"
+          ### Acceptance Criteria
+          - [ ] \`generate_template\` produces the correct files/directories
+          - [ ] Generated output is tested or manually verified
+          - [ ] No placeholder \`print\` statements remain
+          BODY
 
             gh issue create \
               --title "$title" \
-              --body "$body" \
+              --body-file /tmp/issue_body.md \
               --label "executor,enhancement"
 
             echo "CREATED: $title"
