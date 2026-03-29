@@ -16,29 +16,39 @@ from constants.backend.python.base import (
     DJANGO_CUSTOM_AUTH_MODEL,
     DJANGO_CUSTOM_AUTH_ADMIN,
     DJANGO_CUSTOM_AUTH_FORMS,
+    DJANGO_CUSTOM_AUTH_CBV_VIEWS,
+    DJANGO_CUSTOM_AUTH_CBV_URL_CONFIG,
+    DJANGO_CUSTOM_AUTH_FBV_VIEWS,
+    DJANGO_CUSTOM_AUTH_FBV_URL_CONFIG,
 )
 from utils.base import get_venv_python_executor
 
 
-class DjangoCustomAuthExecutor(BaseExecutor):
+class DjangoCustomAuthApisExecutor(BaseExecutor):
     """
-    Executor for scaffolding a Django project with a custom User model.
+    Executor for scaffolding a Django project with a custom User model and
+    JSON auth API endpoints (register, login, logout, profile).
 
-    Builds on DjangoOfficialExecutor by:
-      - Adding the auth app to INSTALLED_APPS
-      - Setting AUTH_USER_MODEL to point at the custom User model
-      - Writing a custom User model (extends AbstractUser)
-      - Registering the model in admin with CustomUserAdmin
-      - Creating UserCreationForm / UserChangeForm subclasses in forms.py
+    Supports two view styles selected at prompt time:
+      - Class Based: uses Django's View with method_decorator
+      - Function Based: uses plain functions with decorators
 
-    No extra packages are required — all functionality comes from Django itself.
+    Both styles use Django's built-in session auth and JsonResponse —
+    no extra packages required.
+
+    Endpoints generated:
+      POST   /<app>/register/
+      POST   /<app>/login/
+      POST   /<app>/logout/
+      GET    /<app>/profile/
+      PUT    /<app>/profile/
     """
 
     def get_venv_environment(self) -> str:
         return DjangoOfficialExecutor().get_venv_environment()
 
     def install_dependencies(self, venv_python_executor: str) -> ExecutorResponseStatus:
-        # Custom auth uses only Django built-ins — no extra packages needed.
+        # Uses only Django built-ins — no extra packages needed.
         return ExecutorResponseStatus(success=True)
 
     # ------------------------------------------------------------------
@@ -46,7 +56,6 @@ class DjangoCustomAuthExecutor(BaseExecutor):
     # ------------------------------------------------------------------
 
     def _insert_app_re(self, content: str, new_app: str) -> str:
-        """Append a new app entry at the end of the INSTALLED_APPS list."""
         pattern = r'(INSTALLED_APPS\s*=\s*\[)(.*?)(\])'
 
         def insert_app(match):
@@ -59,14 +68,6 @@ class DjangoCustomAuthExecutor(BaseExecutor):
 
         return re.sub(pattern, insert_app, content, flags=re.DOTALL)
 
-    def _set_auth_user_model(self, settings_path: str, app_name: str) -> None:
-        """Append AUTH_USER_MODEL after the INSTALLED_APPS block."""
-        try:
-            with open(settings_path, 'a') as f:
-                f.write(f"\n\nAUTH_USER_MODEL = '{app_name}.User'\n")
-        except FileNotFoundError:
-            self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
-
     def _add_to_installed_apps(self, settings_path: str, app_name: str) -> None:
         try:
             with open(settings_path, 'r') as f:
@@ -76,6 +77,33 @@ class DjangoCustomAuthExecutor(BaseExecutor):
                 f.write(content)
         except FileNotFoundError:
             self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
+
+    def _set_auth_user_model(self, settings_path: str, app_name: str) -> None:
+        try:
+            with open(settings_path, 'a') as f:
+                f.write(f"\n\nAUTH_USER_MODEL = '{app_name}.User'\n")
+        except FileNotFoundError:
+            self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
+
+    def _integrate_app_url_into_project(
+            self, project_path: str, project_name: str, app_name: str
+    ) -> None:
+        project_urls_path = os.path.join(project_path, project_name, 'urls.py')
+        try:
+            with open(project_urls_path, 'r') as f:
+                content = f.read()
+            modified = content.replace(
+                'urlpatterns = [\n',
+                f"urlpatterns = [\n    path('{app_name}/', include('{app_name}.urls')),\n"
+            )
+            modified = modified.replace(
+                "from django.urls import path",
+                "from django.urls import path, include"
+            )
+            with open(project_urls_path, 'w') as f:
+                f.write(modified)
+        except FileNotFoundError:
+            self.console.print(f"[bold red]File not found: {project_urls_path}[/bold red]")
 
     # ------------------------------------------------------------------
     # App file writers
@@ -93,24 +121,36 @@ class DjangoCustomAuthExecutor(BaseExecutor):
         with open(os.path.join(app_path, 'forms.py'), 'w') as f:
             f.write(DJANGO_CUSTOM_AUTH_FORMS)
 
+    def _write_views_py(self, app_path: str, use_cbv: bool) -> None:
+        content = DJANGO_CUSTOM_AUTH_CBV_VIEWS if use_cbv else DJANGO_CUSTOM_AUTH_FBV_VIEWS
+        with open(os.path.join(app_path, 'views.py'), 'w') as f:
+            f.write(content)
+
+    def _write_urls_py(self, app_path: str, use_cbv: bool) -> None:
+        content = DJANGO_CUSTOM_AUTH_CBV_URL_CONFIG if use_cbv else DJANGO_CUSTOM_AUTH_FBV_URL_CONFIG
+        with open(os.path.join(app_path, 'urls.py'), 'w') as f:
+            f.write(content)
+
     # ------------------------------------------------------------------
     # BaseExecutor lifecycle
     # ------------------------------------------------------------------
 
     def execute_creation_commands(self, **kwargs) -> ExecutorResponseStatus:
         """
-        Scaffolds a Django project and configures a custom User model.
+        Scaffolds a Django project with custom User model and auth API endpoints.
 
         :param kwargs:
             - project_name (str): Name of the Django project.
             - directory_name (str): Name of the output directory.
-            - app_name (str): Name of the auth app (e.g. 'users', 'accounts').
+            - app_name (str): Name of the auth app (e.g. 'users').
+            - view_type (str): 'Class Based' or 'Function Based'.
         :return: ExecutorResponseStatus indicating success or failure.
         :rtype: ExecutorResponseStatus
         """
         project_name = kwargs["project_name"]
         directory_name = kwargs["directory_name"]
         app_name = kwargs["app_name"]
+        use_cbv = kwargs.get("view_type", "Class Based").strip().lower() == "class based"
 
         django_executor = DjangoOfficialExecutor()
         django_executor._status = self._status
@@ -126,12 +166,13 @@ class DjangoCustomAuthExecutor(BaseExecutor):
             return ExecutorResponseStatus(success=False)
 
         if response.message == "APP_CREATION_FAILED":
-            self.console.print("[bold red]App creation failed — cannot configure custom auth[/bold red]")
+            self.console.print("[bold red]App creation failed — cannot configure auth APIs[/bold red]")
             return ExecutorResponseStatus(success=False)
 
         project_path = response.path
         settings_path = os.path.join(project_path, project_name, 'settings.py')
         app_path = os.path.join(project_path, app_name)
+        view_label = "class-based" if use_cbv else "function-based"
 
         self._update_status("[bold blue]Adding app to INSTALLED_APPS...[/bold blue]")
         self._add_to_installed_apps(settings_path, app_name)
@@ -148,18 +189,28 @@ class DjangoCustomAuthExecutor(BaseExecutor):
         self._update_status("[bold blue]Writing auth forms...[/bold blue]")
         self._write_forms_py(app_path)
 
+        self._update_status(f"[bold blue]Writing {view_label} auth views...[/bold blue]")
+        self._write_views_py(app_path, use_cbv)
+
+        self._update_status(f"[bold blue]Writing {view_label} auth URLs...[/bold blue]")
+        self._write_urls_py(app_path, use_cbv)
+
+        self._update_status("[bold blue]Wiring app URLs into project...[/bold blue]")
+        self._integrate_app_url_into_project(project_path, project_name, app_name)
+
         self._update_status("[bold blue]Updating requirements.txt...[/bold blue]")
         venv_python_executor = get_venv_python_executor()
         django_executor.add_packages_to_requirements_txt(venv_python_executor, project_path)
 
         self.console.print(
-            f"[bold green]Django custom auth project '{project_name}' created successfully![/bold green]"
+            f"[bold green]Django custom auth APIs ({view_label}) project "
+            f"'{project_name}' created successfully![/bold green]"
         )
         return ExecutorResponseStatus(success=True)
 
     def generate(self, **kwargs: DjangoOfficialTemplateArgs) -> ExecutorResponseStatus:
         """
-        Internal implementation for generating the Django custom auth template.
+        Internal implementation for generating the Django custom auth APIs template.
 
         Resolves arguments and delegates to execute_creation_commands.
         Called by run(); do not call directly.
@@ -168,17 +219,20 @@ class DjangoCustomAuthExecutor(BaseExecutor):
             - project_name (str): Name of the Django project.
             - directory_name (str): Name of the output directory.
             - app_name (str): Name of the auth app.
+            - view_type (str): 'Class Based' or 'Function Based'.
         :return: ExecutorResponseStatus indicating success or failure.
         :rtype: ExecutorResponseStatus
         """
         project_name = kwargs.get("project_name", "test") or "test"
         directory_name = kwargs.get("directory_name", "") or project_name
         app_name = kwargs.get("app_name", "users") or "users"
+        view_type = kwargs.get("view_type", "Class Based") or "Class Based"
 
         return self.execute_creation_commands(
             project_name=project_name,
             directory_name=directory_name,
             app_name=app_name,
+            view_type=view_type,
         )
 
     @classmethod
@@ -190,18 +244,21 @@ class DjangoCustomAuthExecutor(BaseExecutor):
                             help='Name of the Django project directory')
         parser.add_argument('--app_name', type=str, default='users',
                             help='Name of the auth app (e.g. users, accounts)')
+        parser.add_argument('--view_type', type=str, default='Class Based',
+                            help='View style: "Class Based" or "Function Based"')
         return parser
 
 
-# Module-level shim so existing callers using generate_django_custom_auth_template() still work
-def generate_django_custom_auth_template(**kwargs) -> ExecutorResponseStatus:
-    return DjangoCustomAuthExecutor().run(**kwargs)
+# Module-level shim for existing callers
+def generate_django_custom_auth_apis_template(**kwargs) -> ExecutorResponseStatus:
+    return DjangoCustomAuthApisExecutor().run(**kwargs)
 
 
 if __name__ == '__main__':
-    args = DjangoCustomAuthExecutor.build_arg_parser().parse_args()
-    DjangoCustomAuthExecutor().run(
+    args = DjangoCustomAuthApisExecutor.build_arg_parser().parse_args()
+    DjangoCustomAuthApisExecutor().run(
         project_name=args.project_name,
         app_name=args.app_name,
         directory_name=args.directory_name,
+        view_type=args.view_type,
     )
