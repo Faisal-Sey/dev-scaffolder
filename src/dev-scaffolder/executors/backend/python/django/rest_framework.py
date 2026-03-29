@@ -13,6 +13,7 @@ from typings.base import (
     ExecutorResponseStatus,
 )
 from constants.backend.python.base import (
+    DJANGO_CORS_SETTINGS,
     DJANGO_DRF_SETTINGS,
     DJANGO_DRF_SERIALIZER,
     DJANGO_DRF_VIEW,
@@ -34,11 +35,12 @@ class DjangoRestFrameworkExecutor(BaseExecutor):
         return DjangoOfficialExecutor().get_venv_environment()
 
     def install_dependencies(self, venv_python_executor: str) -> ExecutorResponseStatus:
-        command = [venv_python_executor, '-m', 'pip', 'install', 'djangorestframework']
-        if not run_subprocess_command(command):
-            self.console.print("[bold red]Failed to install djangorestframework[/bold red]")
-            return ExecutorResponseStatus(success=False)
-        self.console.print("[bold green]Django REST Framework installed successfully[/bold green]")
+        for package in ['djangorestframework', 'django-cors-headers']:
+            command = [venv_python_executor, '-m', 'pip', 'install', package]
+            if not run_subprocess_command(command):
+                self.console.print(f"[bold red]Failed to install {package}[/bold red]")
+                return ExecutorResponseStatus(success=False)
+            self.console.print(f"[bold green]{package} installed successfully[/bold green]")
         return ExecutorResponseStatus(success=True)
 
     def _insert_app_re(self, content: str, new_app: str) -> str:
@@ -67,6 +69,13 @@ class DjangoRestFrameworkExecutor(BaseExecutor):
                 f.write(modified)
         except FileNotFoundError:
             self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
+
+    def _insert_cors_middleware(self, content: str) -> str:
+        """Insert CorsMiddleware before CommonMiddleware in the MIDDLEWARE list."""
+        return content.replace(
+            "    'django.middleware.common.CommonMiddleware',",
+            "    'corsheaders.middleware.CorsMiddleware',\n    'django.middleware.common.CommonMiddleware',"
+        )
 
     def _append_drf_settings(self, settings_path: str) -> None:
         try:
@@ -148,11 +157,24 @@ class DjangoRestFrameworkExecutor(BaseExecutor):
         if not install_response.success:
             return ExecutorResponseStatus(success=False)
 
-        self._update_status("[bold blue]Configuring INSTALLED_APPS and DRF settings...[/bold blue]")
+        self._update_status("[bold blue]Configuring INSTALLED_APPS, middleware, and DRF settings...[/bold blue]")
         if app_name:
             self._add_to_installed_apps(settings_path, app_name)
         self._add_to_installed_apps(settings_path, 'rest_framework')
+        self._add_to_installed_apps(settings_path, 'corsheaders')
         self._append_drf_settings(settings_path)
+
+        self._update_status("[bold blue]Configuring CORS...[/bold blue]")
+        try:
+            with open(settings_path, 'r') as f:
+                content = f.read()
+            content = self._insert_cors_middleware(content)
+            with open(settings_path, 'w') as f:
+                f.write(content)
+            with open(settings_path, 'a') as f:
+                f.write(DJANGO_CORS_SETTINGS)
+        except FileNotFoundError:
+            self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
 
         if app_name:
             app_path = os.path.join(project_path, app_name)

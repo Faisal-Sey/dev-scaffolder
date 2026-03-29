@@ -18,8 +18,9 @@ from constants.backend.python.base import (
     DJANGO_APP_URL_CONFIG,
     DJANGO_VIEW_FUNCTION_IMPORT_JSON_RESPONSE,
     DJANGO_VIEW_FUNCTION,
+    DJANGO_CORS_SETTINGS,
 )
-from utils.base import write_into_file, get_venv_python_executor
+from utils.base import write_into_file, get_venv_python_executor, run_subprocess_command
 
 
 class DjangoOfficialConfigureAppExecutor(BaseExecutor):
@@ -43,14 +44,18 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
 
     def install_dependencies(self, venv_python_executor: str) -> ExecutorResponseStatus:
         """
-        Dependencies are installed by DjangoOfficialExecutor during project
-        scaffolding, so no additional installation is required here.
+        Installs django-cors-headers into the active venv.
 
         :param venv_python_executor: Path to the venv Python executable.
         :type venv_python_executor: str
-        :return: ExecutorResponseStatus indicating success.
+        :return: ExecutorResponseStatus indicating success or failure.
         :rtype: ExecutorResponseStatus
         """
+        command = [venv_python_executor, '-m', 'pip', 'install', 'django-cors-headers']
+        if not run_subprocess_command(command):
+            self.console.print("[bold red]Failed to install django-cors-headers[/bold red]")
+            return ExecutorResponseStatus(success=False)
+        self.console.print("[bold green]django-cors-headers installed successfully[/bold green]")
         return ExecutorResponseStatus(success=True)
 
     # ------------------------------------------------------------------
@@ -158,6 +163,28 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
             [WriteToFileContent(line=0, content=DJANGO_APP_URL_CONFIG)]
         )
 
+    def _insert_cors_middleware(self, content: str) -> str:
+        """Insert CorsMiddleware before CommonMiddleware in the MIDDLEWARE list."""
+        return content.replace(
+            "    'django.middleware.common.CommonMiddleware',",
+            "    'corsheaders.middleware.CorsMiddleware',\n    'django.middleware.common.CommonMiddleware',"
+        )
+
+    def _configure_cors(self, path: str, directory_name: str) -> None:
+        """Add corsheaders to INSTALLED_APPS, insert CorsMiddleware, and append CORS settings."""
+        settings_path = os.path.join(path, directory_name, 'settings.py')
+        try:
+            with open(settings_path, 'r') as f:
+                content = f.read()
+            content = self._insert_app_re(content, 'corsheaders')
+            content = self._insert_cors_middleware(content)
+            with open(settings_path, 'w') as f:
+                f.write(content)
+            with open(settings_path, 'a') as f:
+                f.write(DJANGO_CORS_SETTINGS)
+        except FileNotFoundError:
+            self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
+
     def _configure_app(self, path: str, app_name: str, directory_name: str) -> None:
         self._modify_views_py(path, app_name)
         self._create_app_urls_py(path, app_name)
@@ -217,6 +244,15 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
 
         self._update_status(f"[bold blue]Configuring Django app '{app_name}'...[/bold blue]")
         self._configure_app(response.path, app_name, directory_name)
+
+        venv_python_executor = get_venv_python_executor()
+        self._update_status("[bold blue]Installing django-cors-headers...[/bold blue]")
+        install_response = self.install_dependencies(venv_python_executor)
+        if not install_response.success:
+            return ExecutorResponseStatus(success=False)
+
+        self._update_status("[bold blue]Configuring CORS...[/bold blue]")
+        self._configure_cors(response.path, directory_name)
 
         return ExecutorResponseStatus(success=True)
 

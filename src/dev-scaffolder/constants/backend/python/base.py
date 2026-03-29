@@ -47,3 +47,12 @@ DJANGO_DRF_URL_CONFIG = (
     "    path('', HelloView.as_view(), name='hello'),\n"
     "]\n"
 )
+
+DJANGO_CORS_SETTINGS = (
+    "\n\n# django-cors-headers configuration\n"
+    "CORS_ALLOW_CREDENTIALS = False\n"
+    "CORS_ALLOWED_ORIGINS = [\n"
+    "   'https://example.com',\n"
+    "   'http://localhost:3000',\n"
+    "]\n"
+)
