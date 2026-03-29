@@ -150,6 +150,9 @@ class DjangoOfficialExecutor(BaseExecutor):
             self.console.print("[bold yellow]Project created successfully. Failed at app creation[/bold yellow]")
             return ExecutorResponseStatus(success=True, message="APP_CREATION_FAILED")
 
+        self._update_status("[bold blue]Writing README.md...[/bold blue]")
+        self._write_readme(directory_full_path, project_name=project_name, app_name=app_name)
+
         return ExecutorResponseStatus(success=True)
 
     def generate(self, **kwargs: DjangoOfficialTemplateArgs) -> DjangoOfficialTemplateResponse:
@@ -186,6 +189,28 @@ class DjangoOfficialExecutor(BaseExecutor):
             success=creation_response.success,
             message=creation_response.message,
             path=directory_full_path
+        )
+
+    def get_readme_content(self, **kwargs) -> str:
+        project_name = kwargs.get("project_name", "project")
+        return (
+            f"# {project_name}\n\n"
+            "A Django project scaffolded with dev-scaffolder.\n\n"
+            "## Requirements\n\n"
+            "- Python 3.8+\n\n"
+            "## Setup\n\n"
+            "```bash\n"
+            "python -m venv venv\n"
+            "source venv/bin/activate       # macOS / Linux\n"
+            "venv\\Scripts\\activate          # Windows\n\n"
+            "pip install -r requirements.txt\n"
+            "```\n\n"
+            "## Run\n\n"
+            "```bash\n"
+            "python manage.py migrate\n"
+            "python manage.py runserver\n"
+            "```\n\n"
+            "Open http://localhost:8000 in your browser.\n"
         )
 
     @classmethod

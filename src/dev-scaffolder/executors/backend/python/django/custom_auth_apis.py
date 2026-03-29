@@ -202,6 +202,9 @@ class DjangoCustomAuthApisExecutor(BaseExecutor):
         venv_python_executor = get_venv_python_executor()
         django_executor.add_packages_to_requirements_txt(venv_python_executor, project_path)
 
+        self._update_status("[bold blue]Writing README.md...[/bold blue]")
+        self._write_readme(project_path, project_name=project_name, app_name=app_name, view_label=view_label)
+
         self.console.print(
             f"[bold green]Django custom auth APIs ({view_label}) project "
             f"'{project_name}' created successfully![/bold green]"
@@ -233,6 +236,46 @@ class DjangoCustomAuthApisExecutor(BaseExecutor):
             directory_name=directory_name,
             app_name=app_name,
             view_type=view_type,
+        )
+
+    def get_readme_content(self, **kwargs) -> str:
+        project_name = kwargs.get("project_name", "project")
+        app_name = kwargs.get("app_name", "users")
+        view_label = kwargs.get("view_label", "class-based")
+        return (
+            f"# {project_name}\n\n"
+            f"A Django project with session-based auth API endpoints ({view_label} views), "
+            "scaffolded with dev-scaffolder.\n\n"
+            "## Requirements\n\n"
+            "- Python 3.8+\n\n"
+            "## Setup\n\n"
+            "```bash\n"
+            "python -m venv venv\n"
+            "source venv/bin/activate       # macOS / Linux\n"
+            "venv\\Scripts\\activate          # Windows\n\n"
+            "pip install -r requirements.txt\n"
+            "```\n\n"
+            "## Database\n\n"
+            "```bash\n"
+            "python manage.py makemigrations\n"
+            "python manage.py migrate\n"
+            "```\n\n"
+            "## Run\n\n"
+            "```bash\n"
+            "python manage.py runserver\n"
+            "```\n\n"
+            "## Auth API Endpoints\n\n"
+            f"All endpoints are served under `/{app_name}/`.\n\n"
+            "| Method | URL | Description |\n"
+            "|--------|-----|-------------|\n"
+            f"| POST | `/{app_name}/register/` | Register a new user |\n"
+            f"| POST | `/{app_name}/login/` | Log in (session cookie) |\n"
+            f"| POST | `/{app_name}/logout/` | Log out |\n"
+            f"| GET | `/{app_name}/profile/` | Get profile (auth required) |\n"
+            f"| PUT | `/{app_name}/profile/` | Update profile (auth required) |\n"
+            f"| POST | `/{app_name}/forgot-password/` | Request password reset |\n"
+            f"| POST | `/{app_name}/reset-password/` | Reset password with token |\n\n"
+            "Authentication uses Django's built-in session cookies — no extra packages required.\n"
         )
 
     @classmethod

@@ -182,6 +182,37 @@ class BaseExecutor(ABC):
         ...
 
     # ------------------------------------------------------------------
+    # README helpers
+    # ------------------------------------------------------------------
+
+    def get_readme_content(self, **kwargs) -> str:
+        """
+        Return the README.md content for the scaffolded project.
+
+        Override in subclasses to provide setup and run instructions specific
+        to the executor's framework and configuration.
+
+        :return: Markdown string to write as README.md, or empty string to skip.
+        :rtype: str
+        """
+        return ""
+
+    def _write_readme(self, project_path: str, **kwargs) -> None:
+        """
+        Write get_readme_content() output to README.md inside project_path.
+
+        No-op if get_readme_content() returns an empty string.
+
+        :param project_path: Absolute path to the project root directory.
+        :type project_path: str
+        :param kwargs: Forwarded to get_readme_content().
+        """
+        content = self.get_readme_content(**kwargs)
+        if content:
+            with open(os.path.join(project_path, 'README.md'), 'w') as f:
+                f.write(content)
+
+    # ------------------------------------------------------------------
     # CLI helpers
     # ------------------------------------------------------------------
 

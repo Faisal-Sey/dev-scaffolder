@@ -232,7 +232,39 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
         self._update_status("[bold blue]Updating requirements.txt...[/bold blue]")
         django_executor.add_packages_to_requirements_txt(venv_python_executor, response.path)
 
+        self._update_status("[bold blue]Writing README.md...[/bold blue]")
+        self._write_readme(response.path, project_name=project_name, app_name=app_name)
+
         return ExecutorResponseStatus(success=True)
+
+    def get_readme_content(self, **kwargs) -> str:
+        project_name = kwargs.get("project_name", "project")
+        app_name = kwargs.get("app_name", "")
+        app_section = (
+            f"\n## App: `{app_name}`\n\n"
+            f"The `{app_name}` app is wired into the project with a starter view and URL config.\n\n"
+            f"Visit http://localhost:8000/{app_name}/ to see the default response.\n"
+        ) if app_name else ""
+        return (
+            f"# {project_name}\n\n"
+            "A Django project scaffolded with dev-scaffolder.\n\n"
+            "## Requirements\n\n"
+            "- Python 3.8+\n\n"
+            "## Setup\n\n"
+            "```bash\n"
+            "python -m venv venv\n"
+            "source venv/bin/activate       # macOS / Linux\n"
+            "venv\\Scripts\\activate          # Windows\n\n"
+            "pip install -r requirements.txt\n"
+            "```\n\n"
+            "## Run\n\n"
+            "```bash\n"
+            "python manage.py migrate\n"
+            "python manage.py runserver\n"
+            "```\n\n"
+            "Open http://localhost:8000 in your browser."
+            f"{app_section}\n"
+        )
 
     def generate(self, **kwargs: DjangoOfficialTemplateArgs) -> ExecutorResponseStatus:
         """

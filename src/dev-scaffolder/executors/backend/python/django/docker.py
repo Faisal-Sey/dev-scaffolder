@@ -117,10 +117,48 @@ class DjangoDockerExecutor(BaseExecutor):
         self._update_status("[bold blue]Updating requirements.txt...[/bold blue]")
         django_executor.add_packages_to_requirements_txt(venv_python_executor, project_path)
 
+        self._update_status("[bold blue]Writing README.md...[/bold blue]")
+        self._write_readme(project_path, project_name=project_name, app_name=app_name)
+
         self.console.print(
             f"[bold green]Django Docker project '{project_name}' created successfully![/bold green]"
         )
         return ExecutorResponseStatus(success=True)
+
+    def get_readme_content(self, **kwargs) -> str:
+        project_name = kwargs.get("project_name", "project")
+        return (
+            f"# {project_name}\n\n"
+            "A Django project with Docker support, scaffolded with dev-scaffolder.\n\n"
+            "## Run with Docker\n\n"
+            "```bash\n"
+            "docker compose up --build\n"
+            "```\n\n"
+            "Open http://localhost:8000 in your browser.\n\n"
+            "### Environment\n\n"
+            "Copy the example env file and set your values before starting:\n\n"
+            "```bash\n"
+            "cp .env.example .env\n"
+            "```\n\n"
+            "### Apply migrations\n\n"
+            "```bash\n"
+            "docker compose exec web python manage.py migrate\n"
+            "```\n\n"
+            "### Create a superuser\n\n"
+            "```bash\n"
+            "docker compose exec web python manage.py createsuperuser\n"
+            "```\n\n"
+            "---\n\n"
+            "## Run without Docker\n\n"
+            "```bash\n"
+            "python -m venv venv\n"
+            "source venv/bin/activate       # macOS / Linux\n"
+            "venv\\Scripts\\activate          # Windows\n\n"
+            "pip install -r requirements.txt\n"
+            "python manage.py migrate\n"
+            "python manage.py runserver\n"
+            "```\n"
+        )
 
     def generate(self, **kwargs: DjangoOfficialTemplateArgs) -> ExecutorResponseStatus:
         project_name = kwargs.get("project_name", "test") or "test"
