@@ -1,5 +1,4 @@
-from .cors_headers import CorsHeadersBattery
-from .rest_framework import RestFrameworkBattery
-from .postgresql import PostgreSQLBattery
+# Moved to src/dev-scaffolder/batteries/django/
+from batteries.django import CorsHeadersBattery, RestFrameworkBattery, PostgreSQLBattery
 
 __all__ = ['CorsHeadersBattery', 'RestFrameworkBattery', 'PostgreSQLBattery']

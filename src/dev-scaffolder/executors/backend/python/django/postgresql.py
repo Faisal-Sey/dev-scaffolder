@@ -7,7 +7,7 @@ sys.path.append(
 
 from executors.base import BaseExecutor
 from executors.backend.python.django.official import DjangoOfficialExecutor
-from executors.backend.python.django.batteries.postgresql import PostgreSQLBattery
+from batteries.django import PostgreSQLBattery
 from typings.base import (
     DjangoOfficialTemplateArgs,
     ExecutorResponseStatus,

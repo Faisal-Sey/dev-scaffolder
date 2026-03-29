@@ -10,8 +10,8 @@ sys.path.append(
 
 from executors.base import BaseExecutor
 from executors.backend.python.django.official import DjangoOfficialExecutor
-from executors.backend.python.django.batteries.base import BaseBattery
-from executors.backend.python.django.batteries import (
+from batteries.base import BaseBattery
+from batteries.django import (
     CorsHeadersBattery,
     RestFrameworkBattery,
     PostgreSQLBattery,

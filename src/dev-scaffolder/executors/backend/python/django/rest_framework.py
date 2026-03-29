@@ -7,8 +7,7 @@ sys.path.append(
 
 from executors.base import BaseExecutor
 from executors.backend.python.django.official import DjangoOfficialExecutor
-from executors.backend.python.django.batteries.rest_framework import RestFrameworkBattery
-from executors.backend.python.django.batteries.cors_headers import CorsHeadersBattery
+from batteries.django import RestFrameworkBattery, CorsHeadersBattery
 from typings.base import (
     DjangoOfficialTemplateArgs,
     ExecutorResponseStatus,
