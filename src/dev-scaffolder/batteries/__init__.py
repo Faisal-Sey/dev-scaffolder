@@ -6,6 +6,7 @@ from .django import (
     PythonDotenvBattery,
     DjangoEnvironBattery,
 )
+from .registry import BATTERY_MAP, parse_batteries
 
 __all__ = [
     'BaseBattery',
@@ -14,4 +15,6 @@ __all__ = [
     'PostgreSQLBattery',
     'PythonDotenvBattery',
     'DjangoEnvironBattery',
+    'BATTERY_MAP',
+    'parse_batteries',
 ]

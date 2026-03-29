@@ -11,13 +11,7 @@ sys.path.append(
 from executors.base import BaseExecutor
 from executors.backend.python.django.official import DjangoOfficialExecutor
 from batteries.base import BaseBattery
-from batteries.django import (
-    CorsHeadersBattery,
-    RestFrameworkBattery,
-    PostgreSQLBattery,
-    PythonDotenvBattery,
-    DjangoEnvironBattery,
-)
+from batteries.registry import parse_batteries
 from typings.base import (
     DjangoOfficialTemplateArgs,
     ExecutorResponseStatus,
@@ -240,27 +234,6 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
 
         return ExecutorResponseStatus(success=True)
 
-    _BATTERY_MAP = {
-        'rest framework': RestFrameworkBattery,
-        'cors headers': CorsHeadersBattery,
-        'postgresql': PostgreSQLBattery,
-        'python dotenv': PythonDotenvBattery,
-        'django environ': DjangoEnvironBattery,
-    }
-
-    def _parse_batteries(self, batteries_str: str) -> List[BaseBattery]:
-        """
-        Parse a comma-separated battery string from the CLI into battery instances.
-
-        :param batteries_str: Comma-separated battery names, e.g. "Rest Framework,PostgreSQL"
-        :return: List of instantiated battery objects.
-        """
-        return [
-            self._BATTERY_MAP[name.strip().lower()]()
-            for name in batteries_str.split(',')
-            if name.strip().lower() in self._BATTERY_MAP
-        ]
-
     def generate(self, **kwargs: DjangoOfficialTemplateArgs) -> ExecutorResponseStatus:
         """
         Internal implementation for generating and configuring the Django app template.
@@ -281,7 +254,7 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
 
         batteries_arg = kwargs.get("batteries", "") or ""
         if batteries_arg and not self.batteries:
-            self.batteries = self._parse_batteries(batteries_arg)
+            self.batteries = parse_batteries(batteries_arg)
 
         return self.execute_creation_commands(
             project_name=project_name,

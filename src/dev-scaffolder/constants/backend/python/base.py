@@ -513,3 +513,55 @@ DJANGO_CORS_SETTINGS = (
     "   'http://localhost:3000',\n"
     "]\n"
 )
+
+DJANGO_DOCKERFILE = (
+    "FROM python:3.11-slim\n\n"
+    "ENV PYTHONDONTWRITEBYTECODE=1 \\\n"
+    "    PYTHONUNBUFFERED=1\n\n"
+    "WORKDIR /app\n\n"
+    "COPY requirements.txt .\n"
+    "RUN pip install --no-cache-dir -r requirements.txt\n\n"
+    "COPY . .\n\n"
+    "EXPOSE 8000\n\n"
+    'CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]\n'
+)
+
+DJANGO_DOCKER_COMPOSE = (
+    "services:\n"
+    "  web:\n"
+    "    build: .\n"
+    "    command: python manage.py runserver 0.0.0.0:8000\n"
+    "    volumes:\n"
+    "      - .:/app\n"
+    "    ports:\n"
+    "      - \"8000:8000\"\n"
+    "    env_file:\n"
+    "      - .env\n"
+    "    depends_on:\n"
+    "      - db\n\n"
+    "  db:\n"
+    "    image: postgres:15\n"
+    "    volumes:\n"
+    "      - postgres_data:/var/lib/postgresql/data\n"
+    "    environment:\n"
+    "      POSTGRES_DB: ${POSTGRES_DB:-django_db}\n"
+    "      POSTGRES_USER: ${POSTGRES_USER:-django_user}\n"
+    "      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-django_password}\n\n"
+    "volumes:\n"
+    "  postgres_data:\n"
+)
+
+DJANGO_DOCKERIGNORE = (
+    "__pycache__/\n"
+    "*.py[cod]\n"
+    "*.egg-info/\n"
+    ".env\n"
+    ".git/\n"
+    ".gitignore\n"
+    ".venv/\n"
+    "venv/\n"
+    "dist/\n"
+    "build/\n"
+    "*.sqlite3\n"
+    "*.log\n"
+)

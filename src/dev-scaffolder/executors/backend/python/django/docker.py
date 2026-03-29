@@ -1,57 +1,165 @@
 import argparse
-import sys
 import os
-from rich.console import Console
+import sys
+from typing import List
 
-# Add the project root to sys.path
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..')))
 
-from rich.status import Status
-from executors.backend.python.django.official import generate_django_official_template
+from executors.base import BaseExecutor
+from executors.backend.python.django.official import DjangoOfficialExecutor
+from batteries.base import BaseBattery
+from batteries.registry import parse_batteries
 from typings.base import (
     DjangoOfficialTemplateArgs,
-    DjangoOfficialTemplateResponse,
-    ExecutorResponseStatus
+    ExecutorResponseStatus,
 )
+from constants.backend.python.base import (
+    DJANGO_DOCKERFILE,
+    DJANGO_DOCKER_COMPOSE,
+    DJANGO_DOCKERIGNORE,
+)
+from utils.base import get_venv_python_executor
 
-console = Console()
 
-def generate_django_docker_template(
-        executing: Status = None,
-        **kwargs: DjangoOfficialTemplateArgs
-) -> ExecutorResponseStatus:
+class DjangoDockerExecutor(BaseExecutor):
     """
-    Generates a Django project with Docker configuration.
+    Executor for scaffolding a Django project with Docker support.
+
+    Generates:
+      - Dockerfile          (python:3.11-slim, installs requirements, exposes 8000)
+      - docker-compose.yml  (web + postgres services)
+      - .dockerignore
+
+    Accepts optional batteries (same set as Official Configure App) that are
+    applied after the base project and Docker files are created.
     """
-    project_name = kwargs.get("project_name", "test")
-    directory_name = kwargs.get("directory_name", project_name)
-    app_name = kwargs.get("app_name", "")
 
-    response: DjangoOfficialTemplateResponse = generate_django_official_template(
-        executing=executing,
-        project_name=project_name,
-        app_name=app_name,
-        directory_name=directory_name
-    )
+    def __init__(self, batteries: List[BaseBattery] = None):
+        super().__init__()
+        self.batteries = batteries or []
 
-    if not response.success:
-        return ExecutorResponseStatus(success=False)
+    def get_venv_environment(self) -> str:
+        return DjangoOfficialExecutor().get_venv_environment()
 
-    console.print(f"[bold green]Django project with Docker '{project_name}' created successfully![/bold green]")
-    console.print("[yellow]Note: Dockerfile and docker-compose.yml creation would be implemented here.[/yellow]")
+    def install_dependencies(self, venv_python_executor: str) -> ExecutorResponseStatus:
+        return ExecutorResponseStatus(success=True)
 
-    return ExecutorResponseStatus(success=True)
+    # ------------------------------------------------------------------
+    # Docker file writers
+    # ------------------------------------------------------------------
+
+    def _write_dockerfile(self, project_path: str) -> None:
+        with open(os.path.join(project_path, 'Dockerfile'), 'w') as f:
+            f.write(DJANGO_DOCKERFILE)
+
+    def _write_docker_compose(self, project_path: str) -> None:
+        with open(os.path.join(project_path, 'docker-compose.yml'), 'w') as f:
+            f.write(DJANGO_DOCKER_COMPOSE)
+
+    def _write_dockerignore(self, project_path: str) -> None:
+        with open(os.path.join(project_path, '.dockerignore'), 'w') as f:
+            f.write(DJANGO_DOCKERIGNORE)
+
+    # ------------------------------------------------------------------
+    # BaseExecutor lifecycle
+    # ------------------------------------------------------------------
+
+    def execute_creation_commands(self, **kwargs) -> ExecutorResponseStatus:
+        """
+        Scaffolds a Django project and adds Docker configuration files.
+
+        :param kwargs:
+            - project_name (str): Name of the Django project.
+            - directory_name (str): Name of the output directory.
+            - app_name (str): Name of the Django app (optional).
+        :return: ExecutorResponseStatus indicating success or failure.
+        :rtype: ExecutorResponseStatus
+        """
+        project_name = kwargs["project_name"]
+        directory_name = kwargs["directory_name"]
+        app_name = kwargs["app_name"]
+
+        django_executor = DjangoOfficialExecutor()
+        django_executor._status = self._status
+
+        self._update_status(f"[bold blue]Scaffolding Django project '{project_name}'...[/bold blue]")
+        response = django_executor.generate(
+            project_name=project_name,
+            directory_name=directory_name,
+            app_name=app_name,
+        )
+
+        if not response.success:
+            return ExecutorResponseStatus(success=False)
+
+        project_path = response.path
+
+        self._update_status("[bold blue]Writing Dockerfile...[/bold blue]")
+        self._write_dockerfile(project_path)
+
+        self._update_status("[bold blue]Writing docker-compose.yml...[/bold blue]")
+        self._write_docker_compose(project_path)
+
+        self._update_status("[bold blue]Writing .dockerignore...[/bold blue]")
+        self._write_dockerignore(project_path)
+
+        venv_python_executor = get_venv_python_executor()
+
+        for battery in self.batteries:
+            battery_name = battery.__class__.__name__
+            self._update_status(f"[bold blue]Applying {battery_name}...[/bold blue]")
+            install_response = battery.install(venv_python_executor)
+            if not install_response.success:
+                return ExecutorResponseStatus(success=False)
+            battery.configure(project_path, project_name, app_name)
+
+        self._update_status("[bold blue]Updating requirements.txt...[/bold blue]")
+        django_executor.add_packages_to_requirements_txt(venv_python_executor, project_path)
+
+        self.console.print(
+            f"[bold green]Django Docker project '{project_name}' created successfully![/bold green]"
+        )
+        return ExecutorResponseStatus(success=True)
+
+    def generate(self, **kwargs: DjangoOfficialTemplateArgs) -> ExecutorResponseStatus:
+        project_name = kwargs.get("project_name", "test") or "test"
+        directory_name = kwargs.get("directory_name", "") or project_name
+        app_name = kwargs.get("app_name", "") or ""
+
+        batteries_arg = kwargs.get("batteries", "") or ""
+        if batteries_arg and not self.batteries:
+            self.batteries = parse_batteries(batteries_arg)
+
+        return self.execute_creation_commands(
+            project_name=project_name,
+            directory_name=directory_name,
+            app_name=app_name,
+        )
+
+    @classmethod
+    def build_arg_parser(cls) -> argparse.ArgumentParser:
+        parser = super().build_arg_parser()
+        parser.add_argument('--project_name', type=str, default='myproject',
+                            help='Name of the Django project')
+        parser.add_argument('--directory_name', type=str, default='myproject',
+                            help='Name of the Django project directory')
+        parser.add_argument('--app_name', type=str, default='',
+                            help='Name of the Django app (optional)')
+        parser.add_argument('--batteries', type=str, default='',
+                            help='Comma-separated batteries to apply, e.g. "Rest Framework,PostgreSQL"')
+        return parser
+
+
+def generate_django_docker_template(**kwargs) -> ExecutorResponseStatus:
+    return DjangoDockerExecutor().run(**kwargs)
+
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Generate Django Docker template')
-    parser.add_argument('--project_name', type=str, default='myproject')
-    parser.add_argument('--directory_name', type=str, default='myproject')
-    parser.add_argument('--app_name', type=str, default='')
-    args = parser.parse_args()
-
-    generate_django_docker_template(
+    args = DjangoDockerExecutor.build_arg_parser().parse_args()
+    DjangoDockerExecutor().run(
         project_name=args.project_name,
         app_name=args.app_name,
         directory_name=args.directory_name,
+        batteries=args.batteries,
     )
