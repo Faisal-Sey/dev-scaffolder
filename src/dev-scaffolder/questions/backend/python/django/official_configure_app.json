@@ -26,7 +26,7 @@
       "name": "batteries",
       "type": "checkbox",
       "message": "Select batteries to include (space to select, enter to confirm)",
-      "choices": ["Rest Framework", "CORS Headers", "PostgreSQL"]
+      "choices": ["Rest Framework", "CORS Headers", "PostgreSQL", "Python Dotenv", "Django Environ"]
     }
   ]
 }
