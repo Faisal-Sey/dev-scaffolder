@@ -1,6 +1,5 @@
 import argparse
 import os
-import re
 import sys
 
 sys.path.append(
@@ -8,93 +7,37 @@ sys.path.append(
 
 from executors.base import BaseExecutor
 from executors.backend.python.django.official import DjangoOfficialExecutor
+from executors.backend.python.django.batteries.rest_framework import RestFrameworkBattery
+from executors.backend.python.django.batteries.cors_headers import CorsHeadersBattery
 from typings.base import (
     DjangoOfficialTemplateArgs,
     ExecutorResponseStatus,
 )
-from constants.backend.python.base import (
-    DJANGO_CORS_SETTINGS,
-    DJANGO_DRF_SETTINGS,
-    DJANGO_DRF_SERIALIZER,
-    DJANGO_DRF_VIEW,
-    DJANGO_DRF_URL_CONFIG,
-)
-from utils.base import run_subprocess_command, get_venv_python_executor
+from utils.base import get_venv_python_executor
 
 
 class DjangoRestFrameworkExecutor(BaseExecutor):
     """
-    Executor for scaffolding a Django project with Django REST Framework.
+    Executor for scaffolding a Django project with Django REST Framework and
+    django-cors-headers pre-configured.
 
-    Builds on DjangoOfficialExecutor by installing djangorestframework,
-    adding it to INSTALLED_APPS, configuring DRF settings, and generating
-    a starter serializer, APIView, and URL configuration in the app.
+    Batteries applied:
+      - RestFrameworkBattery: installs DRF, configures INSTALLED_APPS/settings,
+        and generates a starter serializer, APIView, and URL config.
+      - CorsHeadersBattery: installs django-cors-headers and configures middleware
+        and CORS settings.
     """
+
+    def __init__(self):
+        super().__init__()
+        self.batteries = [RestFrameworkBattery(), CorsHeadersBattery()]
 
     def get_venv_environment(self) -> str:
         return DjangoOfficialExecutor().get_venv_environment()
 
     def install_dependencies(self, venv_python_executor: str) -> ExecutorResponseStatus:
-        for package in ['djangorestframework', 'django-cors-headers']:
-            command = [venv_python_executor, '-m', 'pip', 'install', package]
-            if not run_subprocess_command(command):
-                self.console.print(f"[bold red]Failed to install {package}[/bold red]")
-                return ExecutorResponseStatus(success=False)
-            self.console.print(f"[bold green]{package} installed successfully[/bold green]")
+        # Delegated to batteries
         return ExecutorResponseStatus(success=True)
-
-    def _insert_app_re(self, content: str, new_app: str) -> str:
-        """Insert a new app entry into the INSTALLED_APPS list using regex."""
-        pattern = r'(INSTALLED_APPS\s*=\s*\[)(.*?)(\])'
-
-        def insert_app(match):
-            prefix = match.group(1)
-            apps_content = match.group(2)
-            suffix = match.group(3)
-            apps_content = apps_content.rstrip()
-            if apps_content.strip():
-                if not apps_content.strip().endswith(','):
-                    apps_content += ','
-                return f"{prefix}{apps_content}\n    '{new_app}',\n{suffix}"
-            return f"{prefix}\n    '{new_app}',\n{suffix}"
-
-        return re.sub(pattern, insert_app, content, flags=re.DOTALL)
-
-    def _add_to_installed_apps(self, settings_path: str, app_name: str) -> None:
-        try:
-            with open(settings_path, 'r') as f:
-                content = f.read()
-            modified = self._insert_app_re(content, app_name)
-            with open(settings_path, 'w') as f:
-                f.write(modified)
-        except FileNotFoundError:
-            self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
-
-    def _insert_cors_middleware(self, content: str) -> str:
-        """Insert CorsMiddleware before CommonMiddleware in the MIDDLEWARE list."""
-        return content.replace(
-            "    'django.middleware.common.CommonMiddleware',",
-            "    'corsheaders.middleware.CorsMiddleware',\n    'django.middleware.common.CommonMiddleware',"
-        )
-
-    def _append_drf_settings(self, settings_path: str) -> None:
-        try:
-            with open(settings_path, 'a') as f:
-                f.write(DJANGO_DRF_SETTINGS)
-        except FileNotFoundError:
-            self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
-
-    def _create_serializers_py(self, app_path: str) -> None:
-        with open(os.path.join(app_path, 'serializers.py'), 'w') as f:
-            f.write(DJANGO_DRF_SERIALIZER)
-
-    def _update_views_py(self, app_path: str) -> None:
-        with open(os.path.join(app_path, 'views.py'), 'w') as f:
-            f.write(DJANGO_DRF_VIEW)
-
-    def _create_app_urls_py(self, app_path: str) -> None:
-        with open(os.path.join(app_path, 'urls.py'), 'w') as f:
-            f.write(DJANGO_DRF_URL_CONFIG)
 
     def _integrate_app_url_into_project(
             self, project_path: str, project_name: str, app_name: str
@@ -118,7 +61,8 @@ class DjangoRestFrameworkExecutor(BaseExecutor):
 
     def execute_creation_commands(self, **kwargs) -> ExecutorResponseStatus:
         """
-        Scaffolds a Django project, installs DRF, and configures a starter API.
+        Scaffolds a Django project, then applies RestFrameworkBattery and
+        CorsHeadersBattery in sequence.
 
         :param kwargs:
             - project_name (str): Name of the Django project.
@@ -149,41 +93,18 @@ class DjangoRestFrameworkExecutor(BaseExecutor):
             return ExecutorResponseStatus(success=False)
 
         project_path = response.path
-        settings_path = os.path.join(project_path, project_name, 'settings.py')
         venv_python_executor = get_venv_python_executor()
 
-        self._update_status("[bold blue]Installing Django REST Framework...[/bold blue]")
-        install_response = self.install_dependencies(venv_python_executor)
-        if not install_response.success:
-            return ExecutorResponseStatus(success=False)
-
-        self._update_status("[bold blue]Configuring INSTALLED_APPS, middleware, and DRF settings...[/bold blue]")
-        if app_name:
-            self._add_to_installed_apps(settings_path, app_name)
-        self._add_to_installed_apps(settings_path, 'rest_framework')
-        self._add_to_installed_apps(settings_path, 'corsheaders')
-        self._append_drf_settings(settings_path)
-
-        self._update_status("[bold blue]Configuring CORS...[/bold blue]")
-        try:
-            with open(settings_path, 'r') as f:
-                content = f.read()
-            content = self._insert_cors_middleware(content)
-            with open(settings_path, 'w') as f:
-                f.write(content)
-            with open(settings_path, 'a') as f:
-                f.write(DJANGO_CORS_SETTINGS)
-        except FileNotFoundError:
-            self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
+        for battery in self.batteries:
+            battery_name = battery.__class__.__name__
+            self._update_status(f"[bold blue]Applying {battery_name}...[/bold blue]")
+            install_response = battery.install(venv_python_executor)
+            if not install_response.success:
+                return ExecutorResponseStatus(success=False)
+            battery.configure(project_path, project_name, app_name)
 
         if app_name:
-            app_path = os.path.join(project_path, app_name)
-            self._update_status(
-                f"[bold blue]Creating DRF serializer, view, and URLs in '{app_name}'...[/bold blue]"
-            )
-            self._create_serializers_py(app_path)
-            self._update_views_py(app_path)
-            self._create_app_urls_py(app_path)
+            self._update_status("[bold blue]Wiring app URLs into project...[/bold blue]")
             self._integrate_app_url_into_project(project_path, project_name, app_name)
 
         self._update_status("[bold blue]Updating requirements.txt...[/bold blue]")

@@ -2,6 +2,7 @@ import argparse
 import sys
 import os
 import re
+from typing import List
 
 # Add the project root to sys.path
 sys.path.append(
@@ -9,6 +10,12 @@ sys.path.append(
 
 from executors.base import BaseExecutor
 from executors.backend.python.django.official import DjangoOfficialExecutor
+from executors.backend.python.django.batteries.base import BaseBattery
+from executors.backend.python.django.batteries import (
+    CorsHeadersBattery,
+    RestFrameworkBattery,
+    PostgreSQLBattery,
+)
 from typings.base import (
     DjangoOfficialTemplateArgs,
     ExecutorResponseStatus,
@@ -18,9 +25,8 @@ from constants.backend.python.base import (
     DJANGO_APP_URL_CONFIG,
     DJANGO_VIEW_FUNCTION_IMPORT_JSON_RESPONSE,
     DJANGO_VIEW_FUNCTION,
-    DJANGO_CORS_SETTINGS,
 )
-from utils.base import write_into_file, get_venv_python_executor, run_subprocess_command
+from utils.base import write_into_file, get_venv_python_executor
 
 
 class DjangoOfficialConfigureAppExecutor(BaseExecutor):
@@ -28,10 +34,19 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
     Executor that scaffolds an official Django project and then configures
     the generated app with a starter views.py, urls.py, and project URL wiring.
 
+    Accepts an optional list of batteries (e.g. CorsHeadersBattery,
+    RestFrameworkBattery, PostgreSQLBattery) that are applied after the base
+    app is configured. Each battery handles its own package installation and
+    settings configuration.
+
     Delegates project/app creation to DjangoOfficialExecutor and shares the
     active spinner with it so interactive prompts (e.g. directory replacement)
     are handled correctly.
     """
+
+    def __init__(self, batteries: List[BaseBattery] = None):
+        super().__init__()
+        self.batteries = batteries or []
 
     def get_venv_environment(self) -> str:
         """
@@ -44,18 +59,13 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
 
     def install_dependencies(self, venv_python_executor: str) -> ExecutorResponseStatus:
         """
-        Installs django-cors-headers into the active venv.
+        Dependencies are managed by each battery. This method is a no-op.
 
         :param venv_python_executor: Path to the venv Python executable.
         :type venv_python_executor: str
-        :return: ExecutorResponseStatus indicating success or failure.
+        :return: ExecutorResponseStatus indicating success.
         :rtype: ExecutorResponseStatus
         """
-        command = [venv_python_executor, '-m', 'pip', 'install', 'django-cors-headers']
-        if not run_subprocess_command(command):
-            self.console.print("[bold red]Failed to install django-cors-headers[/bold red]")
-            return ExecutorResponseStatus(success=False)
-        self.console.print("[bold green]django-cors-headers installed successfully[/bold green]")
         return ExecutorResponseStatus(success=True)
 
     # ------------------------------------------------------------------
@@ -163,40 +173,11 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
             [WriteToFileContent(line=0, content=DJANGO_APP_URL_CONFIG)]
         )
 
-    def _insert_cors_middleware(self, content: str) -> str:
-        """Insert CorsMiddleware before CommonMiddleware in the MIDDLEWARE list."""
-        return content.replace(
-            "    'django.middleware.common.CommonMiddleware',",
-            "    'corsheaders.middleware.CorsMiddleware',\n    'django.middleware.common.CommonMiddleware',"
-        )
-
-    def _configure_cors(self, path: str, directory_name: str) -> None:
-        """Add corsheaders to INSTALLED_APPS, insert CorsMiddleware, and append CORS settings."""
-        settings_path = os.path.join(path, directory_name, 'settings.py')
-        try:
-            with open(settings_path, 'r') as f:
-                content = f.read()
-            content = self._insert_app_re(content, 'corsheaders')
-            content = self._insert_cors_middleware(content)
-            with open(settings_path, 'w') as f:
-                f.write(content)
-            with open(settings_path, 'a') as f:
-                f.write(DJANGO_CORS_SETTINGS)
-        except FileNotFoundError:
-            self.console.print(f"[bold red]File not found: {settings_path}[/bold red]")
-
     def _configure_app(self, path: str, app_name: str, directory_name: str) -> None:
         self._modify_views_py(path, app_name)
         self._create_app_urls_py(path, app_name)
         self._integrate_app_url_into_project(path, directory_name, app_name)
         self._configure_app_in_installed_apps(path, directory_name, app_name)
-
-        venv_python_executor = get_venv_python_executor()
-
-        # Re-freeze requirements after app configuration
-        django_executor = DjangoOfficialExecutor()
-        django_executor.add_packages_to_requirements_txt(venv_python_executor, path)
-
         self.console.print(
             f"[bold green]Django app {app_name} configured successfully in {path}[/bold green]"
         )
@@ -207,11 +188,8 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
 
     def execute_creation_commands(self, **kwargs) -> ExecutorResponseStatus:
         """
-        Scaffolds the Django project/app via DjangoOfficialExecutor, then
-        configures the app with starter views, urls, and project URL wiring.
-
-        Shares the active spinner with the inner executor so the directory
-        replacement prompt is handled correctly without spinner conflicts.
+        Scaffolds the Django project/app via DjangoOfficialExecutor, configures
+        the app, then applies each battery in order.
 
         :param kwargs:
             - project_name (str): Name of the Django project.
@@ -246,15 +224,38 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
         self._configure_app(response.path, app_name, directory_name)
 
         venv_python_executor = get_venv_python_executor()
-        self._update_status("[bold blue]Installing django-cors-headers...[/bold blue]")
-        install_response = self.install_dependencies(venv_python_executor)
-        if not install_response.success:
-            return ExecutorResponseStatus(success=False)
 
-        self._update_status("[bold blue]Configuring CORS...[/bold blue]")
-        self._configure_cors(response.path, directory_name)
+        for battery in self.batteries:
+            battery_name = battery.__class__.__name__
+            self._update_status(f"[bold blue]Applying {battery_name}...[/bold blue]")
+            install_response = battery.install(venv_python_executor)
+            if not install_response.success:
+                return ExecutorResponseStatus(success=False)
+            battery.configure(response.path, project_name, app_name)
+
+        self._update_status("[bold blue]Updating requirements.txt...[/bold blue]")
+        django_executor.add_packages_to_requirements_txt(venv_python_executor, response.path)
 
         return ExecutorResponseStatus(success=True)
+
+    _BATTERY_MAP = {
+        'rest framework': RestFrameworkBattery,
+        'cors headers': CorsHeadersBattery,
+        'postgresql': PostgreSQLBattery,
+    }
+
+    def _parse_batteries(self, batteries_str: str) -> List[BaseBattery]:
+        """
+        Parse a comma-separated battery string from the CLI into battery instances.
+
+        :param batteries_str: Comma-separated battery names, e.g. "Rest Framework,PostgreSQL"
+        :return: List of instantiated battery objects.
+        """
+        return [
+            self._BATTERY_MAP[name.strip().lower()]()
+            for name in batteries_str.split(',')
+            if name.strip().lower() in self._BATTERY_MAP
+        ]
 
     def generate(self, **kwargs: DjangoOfficialTemplateArgs) -> ExecutorResponseStatus:
         """
@@ -274,6 +275,10 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
         directory_name = kwargs.get("directory_name", "") or project_name
         app_name = kwargs.get("app_name", "")
 
+        batteries_arg = kwargs.get("batteries", "") or ""
+        if batteries_arg and not self.batteries:
+            self.batteries = self._parse_batteries(batteries_arg)
+
         return self.execute_creation_commands(
             project_name=project_name,
             directory_name=directory_name,
@@ -289,6 +294,8 @@ class DjangoOfficialConfigureAppExecutor(BaseExecutor):
                             help='Name of the Django project directory')
         parser.add_argument('--app_name', type=str, default='core',
                             help='Name of the Django app')
+        parser.add_argument('--batteries', type=str, default='',
+                            help='Comma-separated batteries to apply, e.g. "Rest Framework,PostgreSQL"')
         return parser
 
 
@@ -303,4 +310,5 @@ if __name__ == '__main__':
         project_name=args.project_name,
         app_name=args.app_name,
         directory_name=args.directory_name,
+        batteries=args.batteries,
     )

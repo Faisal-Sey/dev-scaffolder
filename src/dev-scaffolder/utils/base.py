@@ -88,7 +88,10 @@ def run_python_file(file_path: str, inputs: Dict[str, str]) -> None:
     if inputs is not None:
         for key, value in inputs.items():
             args.append(f"--{key}")
-            args.append(value)
+            if isinstance(value, list):
+                args.append(','.join(value))
+            else:
+                args.append(value)
 
     subprocess.run(args)
 

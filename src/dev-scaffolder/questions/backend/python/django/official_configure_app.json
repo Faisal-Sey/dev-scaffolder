@@ -21,6 +21,12 @@
       "type": "text",
       "message": "Enter app name (leave it blank to avoid creating an app)",
       "choices": []
+    },
+    {
+      "name": "batteries",
+      "type": "checkbox",
+      "message": "Select batteries to include (space to select, enter to confirm)",
+      "choices": ["Rest Framework", "CORS Headers", "PostgreSQL"]
     }
   ]
 }

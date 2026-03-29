@@ -48,6 +48,27 @@ DJANGO_DRF_URL_CONFIG = (
     "]\n"
 )
 
+DJANGO_POSTGRESQL_DATABASES = (
+    "DATABASES = {\n"
+    "    'default': {\n"
+    "        'ENGINE': 'django.db.backends.postgresql',\n"
+    "        'NAME': os.environ.get('DB_NAME', 'mydb'),\n"
+    "        'USER': os.environ.get('DB_USER', 'postgres'),\n"
+    "        'PASSWORD': os.environ.get('DB_PASSWORD', ''),\n"
+    "        'HOST': os.environ.get('DB_HOST', 'localhost'),\n"
+    "        'PORT': os.environ.get('DB_PORT', '5432'),\n"
+    "    }\n"
+    "}\n"
+)
+
+DJANGO_POSTGRESQL_ENV_EXAMPLE = (
+    "DB_NAME=mydb\n"
+    "DB_USER=postgres\n"
+    "DB_PASSWORD=\n"
+    "DB_HOST=localhost\n"
+    "DB_PORT=5432\n"
+)
+
 DJANGO_CORS_SETTINGS = (
     "\n\n# django-cors-headers configuration\n"
     "CORS_ALLOW_CREDENTIALS = False\n"
