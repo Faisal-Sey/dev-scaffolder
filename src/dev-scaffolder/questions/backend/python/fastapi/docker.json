@@ -1,7 +1,7 @@
 {
-  "name": "python_fastapi_docker",
+  "name": "fastapi_docker",
   "type": "text",
-  "message": "Configure FastAPI + Docker project",
+  "message": "Configure FastAPI Docker project",
   "choices": [],
   "children": [
     {
@@ -11,10 +11,24 @@
       "choices": []
     },
     {
-      "name": "use_postgres",
-      "type": "confirm",
-      "message": "Include PostgreSQL service?",
+      "name": "directory_name",
+      "type": "text",
+      "message": "Enter project directory name (leave it blank to use project name)",
       "choices": []
+    },
+    {
+      "name": "batteries",
+      "type": "checkbox",
+      "message": "Select additional batteries to include (space to select, enter to confirm)",
+      "choices": [
+        "CORS",
+        "SQLAlchemy",
+        "Tortoise ORM",
+        "Celery",
+        "Pytest",
+        "Sentry",
+        "Structlog"
+      ]
     }
   ]
 }

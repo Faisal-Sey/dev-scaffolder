@@ -1,7 +1,7 @@
 {
-  "name": "python_fastapi_jwt_auth",
+  "name": "fastapi_jwt_auth",
   "type": "text",
-  "message": "Configure FastAPI + JWT Auth project",
+  "message": "Configure FastAPI JWT Auth project",
   "choices": [],
   "children": [
     {
@@ -11,10 +11,22 @@
       "choices": []
     },
     {
-      "name": "use_postgres",
-      "type": "confirm",
-      "message": "Use PostgreSQL (default: SQLite)?",
+      "name": "directory_name",
+      "type": "text",
+      "message": "Enter project directory name (leave it blank to use project name)",
       "choices": []
+    },
+    {
+      "name": "batteries",
+      "type": "checkbox",
+      "message": "Select additional batteries to include (space to select, enter to confirm)",
+      "choices": [
+        "CORS",
+        "Celery",
+        "Pytest",
+        "Sentry",
+        "Structlog"
+      ]
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
-  "name": "python_fastapi_websockets",
+  "name": "fastapi_websockets",
   "type": "text",
-  "message": "Configure FastAPI + WebSockets project",
+  "message": "Configure FastAPI WebSockets project",
   "choices": [],
   "children": [
     {
@@ -9,6 +9,26 @@
       "type": "text",
       "message": "Enter project name",
       "choices": []
+    },
+    {
+      "name": "directory_name",
+      "type": "text",
+      "message": "Enter project directory name (leave it blank to use project name)",
+      "choices": []
+    },
+    {
+      "name": "batteries",
+      "type": "checkbox",
+      "message": "Select additional batteries to include (space to select, enter to confirm)",
+      "choices": [
+        "CORS",
+        "SQLAlchemy",
+        "Tortoise ORM",
+        "Celery",
+        "Pytest",
+        "Sentry",
+        "Structlog"
+      ]
     }
   ]
 }

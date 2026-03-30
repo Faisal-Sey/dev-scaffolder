@@ -19,10 +19,20 @@ from .django import (
     SentryBattery,
     StructlogBattery,
 )
-from .registry import BATTERY_MAP, parse_batteries
+from .fastapi import (
+    FastAPICORSBattery,
+    FastAPISQLAlchemyBattery,
+    FastAPITortoiseORMBattery,
+    FastAPICeleryBattery,
+    FastAPIPytestBattery,
+    FastAPISentryBattery,
+    FastAPIStructlogBattery,
+)
+from .registry import BATTERY_MAP, FASTAPI_BATTERY_MAP, parse_batteries, parse_fastapi_batteries
 
 __all__ = [
     'BaseBattery',
+    # Django batteries
     'CorsHeadersBattery',
     'RestFrameworkBattery',
     'PostgreSQLBattery',
@@ -41,6 +51,17 @@ __all__ = [
     'LoggingMonitoringBattery',
     'SentryBattery',
     'StructlogBattery',
+    # FastAPI batteries
+    'FastAPICORSBattery',
+    'FastAPISQLAlchemyBattery',
+    'FastAPITortoiseORMBattery',
+    'FastAPICeleryBattery',
+    'FastAPIPytestBattery',
+    'FastAPISentryBattery',
+    'FastAPIStructlogBattery',
+    # Registry
     'BATTERY_MAP',
+    'FASTAPI_BATTERY_MAP',
     'parse_batteries',
+    'parse_fastapi_batteries',
 ]
