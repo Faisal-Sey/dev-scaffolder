@@ -8,6 +8,7 @@ from batteries.django import (
     PythonDotenvBattery,
     DjangoEnvironBattery,
     WhitenoiseBattery,
+    CeleryBattery,
 )
 
 # Single source of truth for available batteries.
@@ -19,6 +20,7 @@ BATTERY_MAP = {
     'python dotenv': PythonDotenvBattery,
     'django environ': DjangoEnvironBattery,
     'whitenoise': WhitenoiseBattery,
+    'celery': CeleryBattery,
 }
 
 

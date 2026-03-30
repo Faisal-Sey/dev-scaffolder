@@ -6,6 +6,7 @@ from .django import (
     PythonDotenvBattery,
     DjangoEnvironBattery,
     WhitenoiseBattery,
+    CeleryBattery,
 )
 from .registry import BATTERY_MAP, parse_batteries
 
@@ -17,6 +18,7 @@ __all__ = [
     'PythonDotenvBattery',
     'DjangoEnvironBattery',
     'WhitenoiseBattery',
+    'CeleryBattery',
     'BATTERY_MAP',
     'parse_batteries',
 ]

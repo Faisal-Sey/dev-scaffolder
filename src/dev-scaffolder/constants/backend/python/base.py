@@ -514,6 +514,27 @@ DJANGO_CORS_SETTINGS = (
     "]\n"
 )
 
+DJANGO_CELERY_SETTINGS = (
+    "\n\n# Celery\n"
+    "CELERY_BROKER_URL = 'redis://localhost:6379/0'\n"
+    "CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'\n"
+    "CELERY_ACCEPT_CONTENT = ['json']\n"
+    "CELERY_TASK_SERIALIZER = 'json'\n"
+    "CELERY_RESULT_SERIALIZER = 'json'\n"
+    "CELERY_TIMEZONE = TIME_ZONE\n"
+)
+
+DJANGO_CELERY_TASK_EXAMPLE = (
+    "from celery import shared_task\n\n\n"
+    "@shared_task\n"
+    "def add(x, y):\n"
+    "    return x + y\n\n\n"
+    "@shared_task\n"
+    "def sample_task():\n"
+    "    # Replace with your task logic\n"
+    "    return 'Task completed'\n"
+)
+
 DJANGO_WHITENOISE_SETTINGS = (
     "\n\n# Whitenoise static file serving\n"
     "STATIC_ROOT = BASE_DIR / 'staticfiles'\n"

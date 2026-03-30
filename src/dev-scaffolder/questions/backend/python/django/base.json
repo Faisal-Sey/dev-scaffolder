@@ -10,7 +10,6 @@
     "Custom Auth (JWT)",
     "Docker",
     "Static Files",
-    "Background Tasks (Celery)",
     "WebSockets (Channels)",
     "CI/CD (GitHub Actions)",
     "Testing (Pytest)",
