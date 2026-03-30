@@ -1,14 +1,17 @@
 {
-  "name": "python_htmx_websockets",
+  "name": "htmx_websockets",
   "type": "text",
   "message": "Configure Django + HTMX + WebSockets project",
   "choices": [],
   "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []},
+    {"name": "directory_name", "type": "text", "message": "Enter project directory name (leave it blank to use project name)", "choices": []},
+    {"name": "app_name", "type": "text", "message": "Enter app name for consumers and routing (e.g. chat)", "choices": []},
     {
-      "name": "project_name",
-      "type": "text",
-      "message": "Enter project name",
-      "choices": []
+      "name": "batteries",
+      "type": "checkbox",
+      "message": "Select additional batteries to include (space to select, enter to confirm)",
+      "choices": ["PostgreSQL", "Python Dotenv", "Django Environ", "GitHub Actions", "GitLab CI", "Bitbucket Pipelines", "CircleCI", "Pytest", "Unittest", "Coverage", "Factory Boy", "Logging", "Sentry", "Structlog"]
     }
   ]
 }

@@ -1,14 +1,17 @@
 {
-  "name": "python_htmx_alpine_js",
+  "name": "htmx_alpine_js",
   "type": "text",
   "message": "Configure Django + HTMX + Alpine.js project",
   "choices": [],
   "children": [
+    {"name": "project_name", "type": "text", "message": "Enter project name", "choices": []},
+    {"name": "directory_name", "type": "text", "message": "Enter project directory name (leave it blank to use project name)", "choices": []},
+    {"name": "app_name", "type": "text", "message": "Enter app name (leave it blank to use 'core')", "choices": []},
     {
-      "name": "project_name",
-      "type": "text",
-      "message": "Enter project name",
-      "choices": []
+      "name": "batteries",
+      "type": "checkbox",
+      "message": "Select additional batteries to include (space to select, enter to confirm)",
+      "choices": ["PostgreSQL", "Python Dotenv", "Django Environ", "Whitenoise", "GitHub Actions", "GitLab CI", "Bitbucket Pipelines", "CircleCI", "Pytest", "Unittest", "Coverage", "Factory Boy", "Logging", "Sentry", "Structlog"]
     }
   ]
 }
