@@ -514,6 +514,23 @@ DJANGO_CORS_SETTINGS = (
     "]\n"
 )
 
+DJANGO_WHITENOISE_SETTINGS = (
+    "\n\n# Whitenoise static file serving\n"
+    "STATIC_ROOT = BASE_DIR / 'staticfiles'\n"
+    "STATICFILES_DIRS = [BASE_DIR / 'static']\n"
+    "STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'\n"
+)
+
+DJANGO_SAMPLE_CSS = (
+    "/* static/css/style.css */\n\n"
+    "body {\n"
+    "    margin: 0;\n"
+    "    font-family: sans-serif;\n"
+    "    background-color: #f5f5f5;\n"
+    "    color: #333;\n"
+    "}\n"
+)
+
 DJANGO_DOCKER_ENV = (
     "# Django\n"
     "DEBUG=1\n"

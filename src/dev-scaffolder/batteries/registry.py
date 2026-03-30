@@ -7,6 +7,7 @@ from batteries.django import (
     PostgreSQLBattery,
     PythonDotenvBattery,
     DjangoEnvironBattery,
+    WhitenoiseBattery,
 )
 
 # Single source of truth for available batteries.
@@ -17,6 +18,7 @@ BATTERY_MAP = {
     'postgresql': PostgreSQLBattery,
     'python dotenv': PythonDotenvBattery,
     'django environ': DjangoEnvironBattery,
+    'whitenoise': WhitenoiseBattery,
 }
 
 

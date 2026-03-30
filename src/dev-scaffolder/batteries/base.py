@@ -65,6 +65,13 @@ class BaseBattery(ABC):
             f"    '{middleware}',\n    'django.middleware.common.CommonMiddleware',"
         )
 
+    def _insert_after_security_middleware(self, content: str, middleware: str) -> str:
+        """Insert a middleware entry immediately after SecurityMiddleware."""
+        return content.replace(
+            "    'django.middleware.security.SecurityMiddleware',",
+            f"    'django.middleware.security.SecurityMiddleware',\n    '{middleware}',"
+        )
+
     @abstractmethod
     def install(self, venv_python_executor: str) -> ExecutorResponseStatus:
         """
