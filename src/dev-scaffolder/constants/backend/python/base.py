@@ -514,6 +514,47 @@ DJANGO_CORS_SETTINGS = (
     "]\n"
 )
 
+DJANGO_CHANNELS_SETTINGS = (
+    "\n\n# Django Channels\n"
+    "CHANNEL_LAYERS = {\n"
+    "    'default': {\n"
+    "        'BACKEND': 'channels_redis.core.RedisChannelLayer',\n"
+    "        'CONFIG': {\n"
+    "            'hosts': [('127.0.0.1', 6379)],\n"
+    "        },\n"
+    "    },\n"
+    "}\n"
+)
+
+DJANGO_CHANNELS_CONSUMER = (
+    "import json\n"
+    "from channels.generic.websocket import AsyncWebsocketConsumer\n\n\n"
+    "class ChatConsumer(AsyncWebsocketConsumer):\n"
+    "    async def connect(self):\n"
+    "        self.group_name = 'chat'\n"
+    "        await self.channel_layer.group_add(self.group_name, self.channel_name)\n"
+    "        await self.accept()\n\n"
+    "    async def disconnect(self, close_code):\n"
+    "        await self.channel_layer.group_discard(self.group_name, self.channel_name)\n\n"
+    "    async def receive(self, text_data):\n"
+    "        data = json.loads(text_data)\n"
+    "        message = data.get('message', '')\n"
+    "        await self.channel_layer.group_send(\n"
+    "            self.group_name,\n"
+    "            {'type': 'chat_message', 'message': message},\n"
+    "        )\n\n"
+    "    async def chat_message(self, event):\n"
+    "        await self.send(text_data=json.dumps({'message': event['message']}))\n"
+)
+
+DJANGO_CHANNELS_ROUTING = (
+    "from django.urls import re_path\n"
+    "from . import consumers\n\n"
+    "websocket_urlpatterns = [\n"
+    "    re_path(r'ws/chat/$', consumers.ChatConsumer.as_asgi()),\n"
+    "]\n"
+)
+
 DJANGO_CELERY_SETTINGS = (
     "\n\n# Celery\n"
     "CELERY_BROKER_URL = 'redis://localhost:6379/0'\n"
