@@ -514,11 +514,26 @@ DJANGO_CORS_SETTINGS = (
     "]\n"
 )
 
+DJANGO_DOCKER_ENV = (
+    "# Django\n"
+    "DEBUG=1\n"
+    "SECRET_KEY=change-me-in-production\n"
+    "DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1\n\n"
+    "# PostgreSQL\n"
+    "POSTGRES_DB=django_db\n"
+    "POSTGRES_USER=django_user\n"
+    "POSTGRES_PASSWORD=django_password\n"
+    "DATABASE_URL=postgresql://django_user:django_password@db:5432/django_db\n"
+)
+
 DJANGO_DOCKERFILE = (
-    "FROM python:3.11-slim\n\n"
+    "FROM python:3.12-slim\n\n"
     "ENV PYTHONDONTWRITEBYTECODE=1 \\\n"
     "    PYTHONUNBUFFERED=1\n\n"
     "WORKDIR /app\n\n"
+    "RUN apt-get update \\\n"
+    "    && apt-get install -y --no-install-recommends gcc libpq-dev \\\n"
+    "    && rm -rf /var/lib/apt/lists/*\n\n"
     "COPY requirements.txt .\n"
     "RUN pip install --no-cache-dir -r requirements.txt\n\n"
     "COPY . .\n\n"

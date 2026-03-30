@@ -18,6 +18,7 @@ from constants.backend.python.base import (
     DJANGO_DOCKERFILE,
     DJANGO_DOCKER_COMPOSE,
     DJANGO_DOCKERIGNORE,
+    DJANGO_DOCKER_ENV,
 )
 from utils.base import get_venv_python_executor
 
@@ -60,6 +61,10 @@ class DjangoDockerExecutor(BaseExecutor):
     def _write_dockerignore(self, project_path: str) -> None:
         with open(os.path.join(project_path, '.dockerignore'), 'w') as f:
             f.write(DJANGO_DOCKERIGNORE)
+
+    def _write_env(self, project_path: str) -> None:
+        with open(os.path.join(project_path, '.env'), 'w') as f:
+            f.write(DJANGO_DOCKER_ENV)
 
     # ------------------------------------------------------------------
     # BaseExecutor lifecycle
@@ -104,6 +109,9 @@ class DjangoDockerExecutor(BaseExecutor):
         self._update_status("[bold blue]Writing .dockerignore...[/bold blue]")
         self._write_dockerignore(project_path)
 
+        self._update_status("[bold blue]Writing .env...[/bold blue]")
+        self._write_env(project_path)
+
         venv_python_executor = get_venv_python_executor()
 
         for battery in self.batteries:
@@ -131,6 +139,9 @@ class DjangoDockerExecutor(BaseExecutor):
             f"# {project_name}\n\n"
             "A Django project with Docker support, scaffolded with dev-scaffolder.\n\n"
             "## Run with Docker\n\n"
+            "> **Prerequisites:** Docker Desktop must be installed and running before executing any Docker commands.\n"
+            "> If you see an error like `unable to get image` or `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified`,\n"
+            "> open Docker Desktop and wait for it to finish starting up, then try again.\n\n"
             "```bash\n"
             "docker compose up --build\n"
             "```\n\n"
