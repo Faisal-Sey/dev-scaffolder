@@ -10,10 +10,7 @@
     "Custom Auth (JWT)",
     "Docker",
     "Static Files",
-    "WebSockets (Channels)",
-    "CI/CD (GitHub Actions)",
-    "Testing (Pytest)",
-    "Logging and Monitoring"
+    "WebSockets (Channels)"
   ],
   "children": []
 }

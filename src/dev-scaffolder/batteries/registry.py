@@ -9,11 +9,23 @@ from batteries.django import (
     DjangoEnvironBattery,
     WhitenoiseBattery,
     CeleryBattery,
+    GitHubActionsBattery,
+    GitLabCIBattery,
+    BitbucketPipelinesBattery,
+    CircleCIBattery,
+    PytestBattery,
+    UnitTestBattery,
+    CoverageBattery,
+    FactoryBoyBattery,
+    LoggingMonitoringBattery,
+    SentryBattery,
+    StructlogBattery,
 )
 
 # Single source of truth for available batteries.
 # Add new batteries here; all executors that use parse_batteries() pick them up automatically.
 BATTERY_MAP = {
+    # Dependencies
     'rest framework': RestFrameworkBattery,
     'cors headers': CorsHeadersBattery,
     'postgresql': PostgreSQLBattery,
@@ -21,6 +33,20 @@ BATTERY_MAP = {
     'django environ': DjangoEnvironBattery,
     'whitenoise': WhitenoiseBattery,
     'celery': CeleryBattery,
+    # CI/CD
+    'github actions': GitHubActionsBattery,
+    'gitlab ci': GitLabCIBattery,
+    'bitbucket pipelines': BitbucketPipelinesBattery,
+    'circleci': CircleCIBattery,
+    # Testing
+    'pytest': PytestBattery,
+    'unittest': UnitTestBattery,
+    'coverage': CoverageBattery,
+    'factory boy': FactoryBoyBattery,
+    # Logging / Monitoring
+    'logging': LoggingMonitoringBattery,
+    'sentry': SentryBattery,
+    'structlog': StructlogBattery,
 }
 
 

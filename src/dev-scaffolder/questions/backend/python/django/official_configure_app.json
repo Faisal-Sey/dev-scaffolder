@@ -26,7 +26,26 @@
       "name": "batteries",
       "type": "checkbox",
       "message": "Select batteries to include (space to select, enter to confirm)",
-      "choices": ["Rest Framework", "CORS Headers", "PostgreSQL", "Python Dotenv", "Django Environ", "Whitenoise", "Celery"]
+      "choices": [
+        "Rest Framework",
+        "CORS Headers",
+        "PostgreSQL",
+        "Python Dotenv",
+        "Django Environ",
+        "Whitenoise",
+        "Celery",
+        "GitHub Actions",
+        "GitLab CI",
+        "Bitbucket Pipelines",
+        "CircleCI",
+        "Pytest",
+        "Unittest",
+        "Coverage",
+        "Factory Boy",
+        "Logging",
+        "Sentry",
+        "Structlog"
+      ]
     }
   ]
 }

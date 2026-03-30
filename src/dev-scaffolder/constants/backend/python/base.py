@@ -514,6 +514,210 @@ DJANGO_CORS_SETTINGS = (
     "]\n"
 )
 
+# ---------------------------------------------------------------------------
+# CI/CD
+# ---------------------------------------------------------------------------
+
+DJANGO_GITHUB_ACTIONS_WORKFLOW = (
+    "name: Django CI\n\n"
+    "on:\n"
+    "  push:\n"
+    "    branches: [ main ]\n"
+    "  pull_request:\n"
+    "    branches: [ main ]\n\n"
+    "jobs:\n"
+    "  test:\n"
+    "    runs-on: ubuntu-latest\n\n"
+    "    steps:\n"
+    "      - uses: actions/checkout@v4\n\n"
+    "      - name: Set up Python\n"
+    "        uses: actions/setup-python@v5\n"
+    "        with:\n"
+    "          python-version: '3.12'\n\n"
+    "      - name: Install dependencies\n"
+    "        run: |\n"
+    "          python -m pip install --upgrade pip\n"
+    "          pip install -r requirements.txt\n\n"
+    "      - name: Run tests\n"
+    "        run: python manage.py test\n"
+)
+
+DJANGO_GITLAB_CI = (
+    "image: python:3.12\n\n"
+    "stages:\n"
+    "  - test\n\n"
+    "variables:\n"
+    "  PIP_CACHE_DIR: \"$CI_PROJECT_DIR/.cache/pip\"\n\n"
+    "cache:\n"
+    "  paths:\n"
+    "    - .cache/pip\n\n"
+    "test:\n"
+    "  stage: test\n"
+    "  script:\n"
+    "    - pip install -r requirements.txt\n"
+    "    - python manage.py test\n"
+    "  only:\n"
+    "    - main\n"
+    "    - merge_requests\n"
+)
+
+DJANGO_BITBUCKET_PIPELINES = (
+    "image: python:3.12\n\n"
+    "pipelines:\n"
+    "  default:\n"
+    "    - step:\n"
+    "        name: Test\n"
+    "        script:\n"
+    "          - pip install -r requirements.txt\n"
+    "          - python manage.py test\n"
+    "  branches:\n"
+    "    main:\n"
+    "      - step:\n"
+    "          name: Test on main\n"
+    "          script:\n"
+    "            - pip install -r requirements.txt\n"
+    "            - python manage.py test\n"
+)
+
+DJANGO_CIRCLECI_CONFIG = (
+    "version: 2.1\n\n"
+    "jobs:\n"
+    "  test:\n"
+    "    docker:\n"
+    "      - image: cimg/python:3.12\n"
+    "    steps:\n"
+    "      - checkout\n"
+    "      - run:\n"
+    "          name: Install dependencies\n"
+    "          command: pip install -r requirements.txt\n"
+    "      - run:\n"
+    "          name: Run tests\n"
+    "          command: python manage.py test\n\n"
+    "workflows:\n"
+    "  main:\n"
+    "    jobs:\n"
+    "      - test\n"
+)
+
+# ---------------------------------------------------------------------------
+# Testing
+# ---------------------------------------------------------------------------
+
+DJANGO_PYTEST_CONFTEST = (
+    "import pytest\n\n\n"
+    "@pytest.fixture(autouse=True)\n"
+    "def enable_db_access_for_all_tests(db):\n"
+    "    pass\n"
+)
+
+DJANGO_PYTEST_TEST_EXAMPLE = (
+    "import pytest\n\n\n"
+    "@pytest.mark.django_db\n"
+    "def test_placeholder():\n"
+    "    \"\"\"Placeholder test — replace with your own.\"\"\"\n"
+    "    assert True\n"
+)
+
+DJANGO_UNITTEST_TEST_EXAMPLE = (
+    "from django.test import TestCase\n\n\n"
+    "class ExampleTestCase(TestCase):\n"
+    "    \"\"\"Placeholder test case — replace with your own.\"\"\"\n\n"
+    "    def test_placeholder(self):\n"
+    "        self.assertTrue(True)\n"
+)
+
+DJANGO_COVERAGE_RC = (
+    "[run]\n"
+    "source = .\n"
+    "omit =\n"
+    "    */migrations/*\n"
+    "    */venv/*\n"
+    "    manage.py\n"
+    "    */settings*.py\n\n"
+    "[report]\n"
+    "skip_empty = True\n"
+    "show_missing = True\n"
+)
+
+DJANGO_FACTORY_BOY_EXAMPLE = (
+    "import factory\n"
+    "from django.contrib.auth import get_user_model\n\n"
+    "User = get_user_model()\n\n\n"
+    "class UserFactory(factory.django.DjangoModelFactory):\n"
+    "    class Meta:\n"
+    "        model = User\n\n"
+    "    username = factory.Sequence(lambda n: f'user{n}')\n"
+    "    email = factory.LazyAttribute(lambda obj: f'{obj.username}@example.com')\n"
+    "    password = factory.PostGenerationMethodCall('set_password', 'password123')\n"
+)
+
+# ---------------------------------------------------------------------------
+# Logging / Monitoring
+# ---------------------------------------------------------------------------
+
+DJANGO_LOGGING_SETTINGS = (
+    "\n\n# Logging\n"
+    "LOGGING = {\n"
+    "    'version': 1,\n"
+    "    'disable_existing_loggers': False,\n"
+    "    'formatters': {\n"
+    "        'verbose': {\n"
+    "            'format': '{levelname} {asctime} {module} {message}',\n"
+    "            'style': '{',\n"
+    "        },\n"
+    "    },\n"
+    "    'handlers': {\n"
+    "        'console': {\n"
+    "            'class': 'logging.StreamHandler',\n"
+    "            'formatter': 'verbose',\n"
+    "        },\n"
+    "        'file': {\n"
+    "            'class': 'logging.FileHandler',\n"
+    "            'filename': BASE_DIR / 'django.log',\n"
+    "            'formatter': 'verbose',\n"
+    "        },\n"
+    "    },\n"
+    "    'root': {\n"
+    "        'handlers': ['console', 'file'],\n"
+    "        'level': 'WARNING',\n"
+    "    },\n"
+    "    'loggers': {\n"
+    "        'django': {\n"
+    "            'handlers': ['console', 'file'],\n"
+    "            'level': 'INFO',\n"
+    "            'propagate': False,\n"
+    "        },\n"
+    "    },\n"
+    "}\n"
+)
+
+DJANGO_SENTRY_SETTINGS = (
+    "\n\n# Sentry\n"
+    "import sentry_sdk\n"
+    "import os\n"
+    "sentry_sdk.init(\n"
+    "    dsn=os.environ.get('SENTRY_DSN', ''),  # set SENTRY_DSN in your environment\n"
+    "    traces_sample_rate=1.0,\n"
+    "    send_default_pii=True,\n"
+    ")\n"
+)
+
+DJANGO_STRUCTLOG_SETTINGS = (
+    "\n\n# structlog\n"
+    "import structlog\n"
+    "structlog.configure(\n"
+    "    processors=[\n"
+    "        structlog.contextvars.merge_contextvars,\n"
+    "        structlog.processors.add_log_level,\n"
+    "        structlog.processors.TimeStamper(fmt='iso'),\n"
+    "        structlog.dev.ConsoleRenderer(),\n"
+    "    ],\n"
+    "    wrapper_class=structlog.BoundLogger,\n"
+    "    context_class=dict,\n"
+    "    logger_factory=structlog.PrintLoggerFactory(),\n"
+    ")\n"
+)
+
 DJANGO_CHANNELS_SETTINGS = (
     "\n\n# Django Channels\n"
     "CHANNEL_LAYERS = {\n"
