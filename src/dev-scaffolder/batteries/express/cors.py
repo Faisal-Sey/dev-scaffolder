@@ -35,7 +35,9 @@ class ExpressCORSBattery(BaseBattery):
         return ExecutorResponseStatus(success=True)
 
     def configure(self, project_path: str, project_name: str, app_name: str) -> None:
-        app_js = os.path.join(project_path, 'src', 'app.js')
+        app_js = os.path.join(project_path, 'src', 'app.ts')
+        if not os.path.exists(app_js):
+            app_js = os.path.join(project_path, 'src', 'app.js')
         try:
             with open(app_js, 'r', encoding='utf-8') as f:
                 content = f.read()

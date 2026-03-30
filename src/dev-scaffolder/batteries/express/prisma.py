@@ -71,7 +71,9 @@ class ExpressPrismaBattery(BaseBattery):
             f.write(EXPRESS_PRISMA_DB_JS)
 
         # Inject import into app.js via battery marker
-        app_js = os.path.join(project_path, 'src', 'app.js')
+        app_js = os.path.join(project_path, 'src', 'app.ts')
+        if not os.path.exists(app_js):
+            app_js = os.path.join(project_path, 'src', 'app.js')
         try:
             with open(app_js, 'r', encoding='utf-8') as f:
                 content = f.read()

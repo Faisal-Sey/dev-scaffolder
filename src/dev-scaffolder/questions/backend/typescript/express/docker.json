@@ -1,7 +1,7 @@
 {
-  "name": "express_socket_io",
+  "name": "express_ts_docker",
   "type": "text",
-  "message": "Configure Express + Socket.IO project",
+  "message": "Configure Express TypeScript + Docker project",
   "choices": [],
   "children": [
     {

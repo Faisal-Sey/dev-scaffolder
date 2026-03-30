@@ -5,6 +5,7 @@
   "choices": [
     "Python",
     "Javascript",
+    "Typescript",
     "Go",
     "Rust",
     "Java",
@@ -15,6 +16,7 @@
   "children": [
     "backend/python/base.json",
     "backend/javascript/base.json",
+    "backend/typescript/base.json",
     "backend/java/base.json",
     "backend/go/base.json",
     "backend/rust/base.json",

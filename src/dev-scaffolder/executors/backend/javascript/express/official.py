@@ -95,6 +95,17 @@ class ExpressOfficialExecutor(BaseExecutor):
         with open(os.path.join(project_path, 'package.json'), 'w', encoding='utf-8') as f:
             f.write(pkg_content)
 
+    def _convert_package_manager(self, pm: str, project_path: str) -> None:
+        """If the user chose yarn or pnpm, delete package-lock.json and reinstall."""
+        if not pm or pm == 'npm':
+            return
+        lock = os.path.join(project_path, 'package-lock.json')
+        if os.path.exists(lock):
+            os.remove(lock)
+        self._update_status(f'[bold blue]Switching to {pm}...[/bold blue]')
+        pm_cmds = get_node_pm_commands(pm)
+        subprocess.run(pm_cmds['install'], cwd=project_path, capture_output=True, text=True)
+
     def _cleanup_battery_markers(self, project_path: str) -> None:
         app_js = os.path.join(project_path, 'src', 'app.js')
         try:
@@ -145,6 +156,7 @@ class ExpressOfficialExecutor(BaseExecutor):
 
         self._cleanup_battery_markers(project_path)
 
+        self._convert_package_manager(kwargs.get('package_manager', 'npm'), project_path)
         self._update_status('[bold blue]Writing README.md...[/bold blue]')
         self._write_readme(project_path, project_name=project_name)
 
@@ -185,6 +197,7 @@ class ExpressOfficialExecutor(BaseExecutor):
         project_name = kwargs.get('project_name', 'myproject') or 'myproject'
         directory_name = kwargs.get('directory_name', '') or project_name
 
+        package_manager = kwargs.get('package_manager', 'npm') or 'npm'
         batteries_arg = kwargs.get('batteries', '') or ''
         if batteries_arg and not self.batteries:
             self.batteries = parse_express_batteries(batteries_arg)
@@ -192,6 +205,7 @@ class ExpressOfficialExecutor(BaseExecutor):
         return self.execute_creation_commands(
             project_name=project_name,
             directory_name=directory_name,
+            package_manager=package_manager,
         )
 
     @classmethod
@@ -199,6 +213,7 @@ class ExpressOfficialExecutor(BaseExecutor):
         parser = super().build_arg_parser()
         parser.add_argument('--project_name', type=str, default='myproject')
         parser.add_argument('--directory_name', type=str, default='myproject')
+        parser.add_argument('--package_manager', type=str, default='npm')
         parser.add_argument('--batteries', type=str, default='')
         return parser
 

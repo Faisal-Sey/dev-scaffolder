@@ -49,7 +49,9 @@ class ExpressSequelizeBattery(BaseBattery):
             f.write(EXPRESS_SEQUELIZE_DB_JS)
 
         # Inject import and authenticate call into app.js via markers
-        app_js = os.path.join(project_path, 'src', 'app.js')
+        app_js = os.path.join(project_path, 'src', 'app.ts')
+        if not os.path.exists(app_js):
+            app_js = os.path.join(project_path, 'src', 'app.js')
         try:
             with open(app_js, 'r', encoding='utf-8') as f:
                 content = f.read()

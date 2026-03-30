@@ -204,6 +204,28 @@ def activate_venv() -> None:
     return None
 
 
+def get_node_pm_commands(pm: str) -> dict:
+    """
+    Return subprocess-ready command lists for the given Node.js package manager.
+
+    :param pm: One of 'npm', 'yarn', or 'pnpm'.
+    :return: Dict with keys 'init', 'install', 'install_dev', 'exe' (the resolved binary path).
+    """
+    import shutil
+    pm = pm.lower().strip() if pm else 'npm'
+    exe = shutil.which(pm) or pm
+    return {
+        'exe': exe,
+        'init': [exe, 'init', '-y'] if pm in ('npm', 'yarn') else [exe, 'init'],
+        'install': [exe, 'install'] if pm == 'npm' else ([exe, 'add'] if pm == 'yarn' else [exe, 'add']),
+        'install_dev': (
+            [exe, 'install', '--save-dev'] if pm == 'npm'
+            else [exe, 'add', '--dev'] if pm == 'yarn'
+            else [exe, 'add', '--save-dev']
+        ),
+    }
+
+
 def write_into_file(path: str, contents: List[WriteToFileContent]) -> ExecutorResponseStatus:
     lines = []
     is_modified = False

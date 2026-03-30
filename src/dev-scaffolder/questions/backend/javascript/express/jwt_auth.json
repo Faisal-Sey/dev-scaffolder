@@ -17,6 +17,16 @@
       "choices": []
     },
     {
+      "name": "package_manager",
+      "type": "list",
+      "message": "Choose package manager",
+      "choices": [
+        "npm",
+        "yarn",
+        "pnpm"
+      ]
+    },
+    {
       "name": "batteries",
       "type": "checkbox",
       "message": "Select additional batteries to include (space to select, enter to confirm)",

@@ -1,7 +1,7 @@
 {
-  "name": "express_socket_io",
+  "name": "express_ts_websockets",
   "type": "text",
-  "message": "Configure Express + Socket.IO project",
+  "message": "Configure Express TypeScript + WebSockets project",
   "choices": [],
   "children": [
     {
@@ -34,7 +34,6 @@
         "CORS",
         "Helmet",
         "Morgan",
-        "Mongoose",
         "Sequelize",
         "Prisma",
         "Jest",
