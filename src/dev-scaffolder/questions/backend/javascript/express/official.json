@@ -1,0 +1,38 @@
+{
+  "name": "express_official",
+  "type": "text",
+  "message": "Configure Express project",
+  "choices": [],
+  "children": [
+    {
+      "name": "project_name",
+      "type": "text",
+      "message": "Enter project name",
+      "choices": []
+    },
+    {
+      "name": "directory_name",
+      "type": "text",
+      "message": "Enter project directory name (leave it blank to use project name)",
+      "choices": []
+    },
+    {
+      "name": "batteries",
+      "type": "checkbox",
+      "message": "Select additional batteries to include (space to select, enter to confirm)",
+      "choices": [
+        "CORS",
+        "Helmet",
+        "Morgan",
+        "Mongoose",
+        "Sequelize",
+        "Prisma",
+        "Jest",
+        "GitHub Actions",
+        "GitLab CI",
+        "Bitbucket Pipelines",
+        "CircleCI"
+      ]
+    }
+  ]
+}

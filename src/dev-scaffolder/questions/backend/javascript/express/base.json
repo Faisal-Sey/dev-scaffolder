@@ -1,0 +1,13 @@
+{
+  "name": "express",
+  "type": "list",
+  "message": "Choose Express template",
+  "choices": [
+    "Official",
+    "Docker",
+    "JWT Auth",
+    "WebSockets",
+    "Socket IO"
+  ],
+  "children": []
+}

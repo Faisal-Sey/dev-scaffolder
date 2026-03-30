@@ -1,6 +1,19 @@
 from typing import List
 
 from batteries.base import BaseBattery
+from batteries.express import (
+    ExpressCORSBattery,
+    ExpressHelmetBattery,
+    ExpressMorganBattery,
+    ExpressMongooseBattery,
+    ExpressSequelizeBattery,
+    ExpressPrismaBattery,
+    ExpressJestBattery,
+    ExpressGitHubActionsBattery,
+    ExpressGitLabCIBattery,
+    ExpressBitbucketPipelinesBattery,
+    ExpressCircleCIBattery,
+)
 from batteries.django import (
     CorsHeadersBattery,
     RestFrameworkBattery,
@@ -86,6 +99,39 @@ def parse_batteries(batteries_str: str) -> List[BaseBattery]:
         BATTERY_MAP[name.strip().lower()]()
         for name in batteries_str.split(',')
         if name.strip().lower() in BATTERY_MAP
+    ]
+
+
+EXPRESS_BATTERY_MAP = {
+    # Middleware
+    'cors': ExpressCORSBattery,
+    'helmet': ExpressHelmetBattery,
+    'morgan': ExpressMorganBattery,
+    # Databases
+    'mongoose': ExpressMongooseBattery,
+    'sequelize': ExpressSequelizeBattery,
+    'prisma': ExpressPrismaBattery,
+    # Testing
+    'jest': ExpressJestBattery,
+    # CI/CD
+    'github actions': ExpressGitHubActionsBattery,
+    'gitlab ci': ExpressGitLabCIBattery,
+    'bitbucket pipelines': ExpressBitbucketPipelinesBattery,
+    'circleci': ExpressCircleCIBattery,
+}
+
+
+def parse_express_batteries(batteries_str: str) -> List[BaseBattery]:
+    """
+    Parse a comma-separated battery string into instantiated Express battery objects.
+
+    :param batteries_str: Comma-separated battery names, e.g. "CORS,Helmet,Jest"
+    :return: List of instantiated battery objects.
+    """
+    return [
+        EXPRESS_BATTERY_MAP[name.strip().lower()]()
+        for name in batteries_str.split(',')
+        if name.strip().lower() in EXPRESS_BATTERY_MAP
     ]
 
 

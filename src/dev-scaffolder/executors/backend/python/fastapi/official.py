@@ -2,7 +2,7 @@ import argparse
 import os
 import subprocess
 import sys
-from typing import List
+from typing import List, cast
 
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..')))
@@ -85,7 +85,7 @@ class FastAPIOfficialExecutor(BaseExecutor):
     def execute_creation_commands(self, **kwargs) -> ExecutorResponseStatus:
         project_name = kwargs['project_name']
         directory_name = kwargs['directory_name']
-        project_path = os.path.join(self.current_folder, directory_name)
+        project_path = cast(str, os.path.join(self.current_folder, directory_name))
 
         preparation = self.prepare_directory(project_path)
         if not preparation.success:

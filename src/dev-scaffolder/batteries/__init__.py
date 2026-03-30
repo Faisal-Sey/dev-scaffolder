@@ -28,7 +28,27 @@ from .fastapi import (
     FastAPISentryBattery,
     FastAPIStructlogBattery,
 )
-from .registry import BATTERY_MAP, FASTAPI_BATTERY_MAP, parse_batteries, parse_fastapi_batteries
+from .express import (
+    ExpressCORSBattery,
+    ExpressHelmetBattery,
+    ExpressMorganBattery,
+    ExpressMongooseBattery,
+    ExpressSequelizeBattery,
+    ExpressPrismaBattery,
+    ExpressJestBattery,
+    ExpressGitHubActionsBattery,
+    ExpressGitLabCIBattery,
+    ExpressBitbucketPipelinesBattery,
+    ExpressCircleCIBattery,
+)
+from .registry import (
+    BATTERY_MAP,
+    FASTAPI_BATTERY_MAP,
+    EXPRESS_BATTERY_MAP,
+    parse_batteries,
+    parse_fastapi_batteries,
+    parse_express_batteries,
+)
 
 __all__ = [
     'BaseBattery',
@@ -59,9 +79,23 @@ __all__ = [
     'FastAPIPytestBattery',
     'FastAPISentryBattery',
     'FastAPIStructlogBattery',
+    # Express batteries
+    'ExpressCORSBattery',
+    'ExpressHelmetBattery',
+    'ExpressMorganBattery',
+    'ExpressMongooseBattery',
+    'ExpressSequelizeBattery',
+    'ExpressPrismaBattery',
+    'ExpressJestBattery',
+    'ExpressGitHubActionsBattery',
+    'ExpressGitLabCIBattery',
+    'ExpressBitbucketPipelinesBattery',
+    'ExpressCircleCIBattery',
     # Registry
     'BATTERY_MAP',
     'FASTAPI_BATTERY_MAP',
+    'EXPRESS_BATTERY_MAP',
     'parse_batteries',
     'parse_fastapi_batteries',
+    'parse_express_batteries',
 ]
