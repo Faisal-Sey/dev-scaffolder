@@ -11,6 +11,7 @@ from executors.base import BaseExecutor
 from batteries.base import BaseBattery
 from batteries.registry import parse_express_batteries
 from typings.base import ExecutorResponseStatus
+from utils.base import get_node_pm_commands
 from constants.backend.javascript.express.base import (
     EXPRESS_WS_PACKAGE_JSON,
     EXPRESS_WS_INDEX_JS,
@@ -58,9 +59,10 @@ class ExpressWebSocketsExecutor(BaseExecutor):
 
     def install_dependencies(self, project_path: str) -> ExecutorResponseStatus:
         self._update_status('[bold blue]Installing Express + ws dependencies...[/bold blue]')
+        npm = self.get_venv_environment()
         for cmd in [
-            [shutil.which('npm') or 'npm', 'install', 'express', 'dotenv', 'ws'],
-            [shutil.which('npm') or 'npm', 'install', '--save-dev', 'nodemon'],
+            [npm, 'install', 'express', 'dotenv', 'ws'],
+            [npm, 'install', '--save-dev', 'nodemon'],
         ]:
             result = subprocess.run(cmd, cwd=project_path, capture_output=True, text=True)
             if result.returncode != 0:

@@ -34,6 +34,17 @@ from batteries.django import (
     SentryBattery,
     StructlogBattery,
 )
+from batteries.fastify import (
+    FastifyCORSBattery,
+    FastifyHelmetBattery,
+    FastifyMongooseBattery,
+    FastifyPrismaBattery,
+    FastifyJestBattery,
+    FastifyGitHubActionsBattery,
+    FastifyGitLabCIBattery,
+    FastifyBitbucketPipelinesBattery,
+    FastifyCircleCIBattery,
+)
 from batteries.fastapi import (
     FastAPICORSBattery,
     FastAPISQLAlchemyBattery,
@@ -132,6 +143,37 @@ def parse_express_batteries(batteries_str: str) -> List[BaseBattery]:
         EXPRESS_BATTERY_MAP[name.strip().lower()]()
         for name in batteries_str.split(',')
         if name.strip().lower() in EXPRESS_BATTERY_MAP
+    ]
+
+
+FASTIFY_BATTERY_MAP = {
+    # Middleware / Plugins
+    'cors': FastifyCORSBattery,
+    'helmet': FastifyHelmetBattery,
+    # Databases
+    'mongoose': FastifyMongooseBattery,
+    'prisma': FastifyPrismaBattery,
+    # Testing
+    'jest': FastifyJestBattery,
+    # CI/CD
+    'github actions': FastifyGitHubActionsBattery,
+    'gitlab ci': FastifyGitLabCIBattery,
+    'bitbucket pipelines': FastifyBitbucketPipelinesBattery,
+    'circleci': FastifyCircleCIBattery,
+}
+
+
+def parse_fastify_batteries(batteries_str: str) -> List[BaseBattery]:
+    """
+    Parse a comma-separated battery string into instantiated Fastify battery objects.
+
+    :param batteries_str: Comma-separated battery names, e.g. "CORS,Helmet,Jest"
+    :return: List of instantiated battery objects.
+    """
+    return [
+        FASTIFY_BATTERY_MAP[name.strip().lower()]()
+        for name in batteries_str.split(',')
+        if name.strip().lower() in FASTIFY_BATTERY_MAP
     ]
 
 
