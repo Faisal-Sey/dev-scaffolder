@@ -5,6 +5,10 @@ from .celery import FastAPICeleryBattery
 from .pytest import FastAPIPytestBattery
 from .sentry import FastAPISentryBattery
 from .structlog import FastAPIStructlogBattery
+from .github_actions import FastAPIGitHubActionsBattery
+from .gitlab_ci import FastAPIGitLabCIBattery
+from .bitbucket_pipelines import FastAPIBitbucketPipelinesBattery
+from .circleci import FastAPICircleCIBattery
 
 __all__ = [
     'FastAPICORSBattery',
@@ -14,4 +18,8 @@ __all__ = [
     'FastAPIPytestBattery',
     'FastAPISentryBattery',
     'FastAPIStructlogBattery',
+    'FastAPIGitHubActionsBattery',
+    'FastAPIGitLabCIBattery',
+    'FastAPIBitbucketPipelinesBattery',
+    'FastAPICircleCIBattery',
 ]

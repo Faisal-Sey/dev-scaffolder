@@ -40,6 +40,9 @@ from batteries.fastify import (
     FastifyMongooseBattery,
     FastifyPrismaBattery,
     FastifyJestBattery,
+    FastifySequelizeBattery,
+    FastifyMorganBattery,
+    FastifySentryBattery,
     FastifyGitHubActionsBattery,
     FastifyGitLabCIBattery,
     FastifyBitbucketPipelinesBattery,
@@ -53,6 +56,20 @@ from batteries.fastapi import (
     FastAPIPytestBattery,
     FastAPISentryBattery,
     FastAPIStructlogBattery,
+    FastAPIGitHubActionsBattery,
+    FastAPIGitLabCIBattery,
+    FastAPIBitbucketPipelinesBattery,
+    FastAPICircleCIBattery,
+)
+from batteries.nestjs import (
+    NestJSCORSBattery,
+    NestJSHelmetBattery,
+    NestJSMongooseBattery,
+    NestJSPrismaBattery,
+    NestJSGitHubActionsBattery,
+    NestJSGitLabCIBattery,
+    NestJSBitbucketPipelinesBattery,
+    NestJSCircleCIBattery,
 )
 
 # Single source of truth for available batteries.
@@ -80,22 +97,6 @@ BATTERY_MAP = {
     'logging': LoggingMonitoringBattery,
     'sentry': SentryBattery,
     'structlog': StructlogBattery,
-}
-
-
-FASTAPI_BATTERY_MAP = {
-    # Middleware
-    'cors': FastAPICORSBattery,
-    # Databases
-    'sqlalchemy': FastAPISQLAlchemyBattery,
-    'tortoise orm': FastAPITortoiseORMBattery,
-    # Background Tasks
-    'celery': FastAPICeleryBattery,
-    # Testing
-    'pytest': FastAPIPytestBattery,
-    # Logging / Monitoring
-    'sentry': FastAPISentryBattery,
-    'structlog': FastAPIStructlogBattery,
 }
 
 
@@ -150,9 +151,13 @@ FASTIFY_BATTERY_MAP = {
     # Middleware / Plugins
     'cors': FastifyCORSBattery,
     'helmet': FastifyHelmetBattery,
+    'morgan': FastifyMorganBattery,
     # Databases
     'mongoose': FastifyMongooseBattery,
+    'sequelize': FastifySequelizeBattery,
     'prisma': FastifyPrismaBattery,
+    # Error tracking
+    'sentry': FastifySentryBattery,
     # Testing
     'jest': FastifyJestBattery,
     # CI/CD
@@ -177,6 +182,27 @@ def parse_fastify_batteries(batteries_str: str) -> List[BaseBattery]:
     ]
 
 
+FASTAPI_BATTERY_MAP = {
+    # Middleware
+    'cors': FastAPICORSBattery,
+    # Databases
+    'sqlalchemy': FastAPISQLAlchemyBattery,
+    'tortoise orm': FastAPITortoiseORMBattery,
+    # Background Tasks
+    'celery': FastAPICeleryBattery,
+    # Testing
+    'pytest': FastAPIPytestBattery,
+    # Logging / Monitoring
+    'sentry': FastAPISentryBattery,
+    'structlog': FastAPIStructlogBattery,
+    # CI/CD
+    'github actions': FastAPIGitHubActionsBattery,
+    'gitlab ci': FastAPIGitLabCIBattery,
+    'bitbucket pipelines': FastAPIBitbucketPipelinesBattery,
+    'circleci': FastAPICircleCIBattery,
+}
+
+
 def parse_fastapi_batteries(batteries_str: str) -> List[BaseBattery]:
     """
     Parse a comma-separated battery string into instantiated FastAPI battery objects.
@@ -188,4 +214,33 @@ def parse_fastapi_batteries(batteries_str: str) -> List[BaseBattery]:
         FASTAPI_BATTERY_MAP[name.strip().lower()]()
         for name in batteries_str.split(',')
         if name.strip().lower() in FASTAPI_BATTERY_MAP
+    ]
+
+
+NESTJS_BATTERY_MAP = {
+    # Middleware
+    'cors': NestJSCORSBattery,
+    'helmet': NestJSHelmetBattery,
+    # Databases
+    'mongoose': NestJSMongooseBattery,
+    'prisma': NestJSPrismaBattery,
+    # CI/CD
+    'github actions': NestJSGitHubActionsBattery,
+    'gitlab ci': NestJSGitLabCIBattery,
+    'bitbucket pipelines': NestJSBitbucketPipelinesBattery,
+    'circleci': NestJSCircleCIBattery,
+}
+
+
+def parse_nestjs_batteries(batteries_str: str) -> List[BaseBattery]:
+    """
+    Parse a comma-separated battery string into instantiated NestJS battery objects.
+
+    :param batteries_str: Comma-separated battery names, e.g. "CORS,Helmet,Mongoose"
+    :return: List of instantiated battery objects.
+    """
+    return [
+        NESTJS_BATTERY_MAP[name.strip().lower()]()
+        for name in batteries_str.split(',')
+        if name.strip().lower() in NESTJS_BATTERY_MAP
     ]
